@@ -1,14 +1,13 @@
-// vite.config.js
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue'; 
 
 export default defineConfig({
     plugins: [
         laravel({
+            // Hapus plugin vue dari sini
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
-        vue(), 
+        // Hapus vue() dari sini
     ],
 });
