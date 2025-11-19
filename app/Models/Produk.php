@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProdukHalal extends Model
+class Produk extends Model
 {
-    protected $table = 'produk_halal';
     protected $fillable = [
-        'kode_produk',
         'nama_produk',
         'nama_produsen',
-        'nomor_sertifikat',
+        'nomor_sertifikat_halal',
+        'barcode',
         'tanggal_terbit',
         'tanggal_kadaluarsa',
+        'kategori',
+        'deskripsi',
+        'status',
     ];
 }

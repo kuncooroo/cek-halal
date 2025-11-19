@@ -6,28 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('produk_halals', function (Blueprint $table) {
+        Schema::create('produks', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_produk')->unique();
             $table->string('nama_produk');
             $table->string('nama_produsen');
-            $table->string('nomor_sertifikat');
+            $table->string('nomor_sertifikat_halal')->unique();
+            $table->string('barcode')->nullable()->unique();
             $table->date('tanggal_terbit');
             $table->date('tanggal_kadaluarsa');
+            $table->string('kategori')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->enum('status', ['aktif', 'tidak_aktif'])->default('aktif');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('produk_halals');
+        Schema::dropIfExists('produks');
     }
 };
