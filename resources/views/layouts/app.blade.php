@@ -169,8 +169,7 @@
                     </ul>
                 </div>
             </div>
-
-            <!-- Bottom Footer -->
+            
             <div class="border-t border-green-800 mt-8 pt-8 text-center">
                 <p class="text-green-200">
                     &copy; {{ date('Y') }} <span class="font-semibold">Cek Halal</span>. Semua hak cipta dilindungi. 
@@ -183,7 +182,6 @@
         </div>
     </footer>
 
-    <!-- Mobile Menu Script -->
     <script>
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');

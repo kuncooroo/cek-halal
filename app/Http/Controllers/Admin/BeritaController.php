@@ -3,63 +3,84 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BeritaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $beritas = Berita::with('user')->latest()->paginate(10);
+        
+        return view('admin.berita.index', compact('beritas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('admin.berita.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'judul'             => 'required|string|max:255',
+            'konten'            => 'required|string',
+            'tanggal_publikasi' => 'required|date',
+            'status'            => 'required|in:draft,published',
+        ]);
+
+
+        Berita::create([
+            'judul'             => $request->judul,
+            'konten'            => $request->konten,
+            'user_id'           => Auth::id(), 
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status'            => $request->status,
+        ]);
+
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        $berita = Berita::findOrFail($id);
+        return view('admin.berita.show', compact('berita'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
+        $berita = Berita::findOrFail($id);
+        return view('admin.berita.edit', compact('berita'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'judul'             => 'required|string|max:255',
+            'konten'            => 'required|string',
+            'tanggal_publikasi' => 'required|date',
+            'status'            => 'required|in:draft,published',
+        ]);
+
+        $berita = Berita::findOrFail($id);
+        
+        $berita->update([
+            'judul'             => $request->judul,
+            'konten'            => $request->konten,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status'            => $request->status,
+        ]);
+
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $berita = Berita::findOrFail($id);
+        $berita->delete();
+
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus!');
     }
 }

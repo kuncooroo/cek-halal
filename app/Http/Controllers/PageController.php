@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Berita;
 use App\Models\Faq;
-use App\Models\ProdukHalal;
+use App\Models\Produk;
 
 class PageController extends Controller
 {
@@ -54,7 +54,7 @@ class PageController extends Controller
 
         if ($tipe == 'scan') {
             $kode_produk = $request->input('kode_produk');
-            $produk = ProdukHalal::where('kode_produk', $kode_produk)->first();
+            $produk = Produk::where('kode_produk', $kode_produk)->first();
 
             if ($produk) {
                 return response()->json(['data' => $produk]);
@@ -62,7 +62,7 @@ class PageController extends Controller
         } 
 
         if ($tipe == 'input') {
-            $query = ProdukHalal::query();
+            $query = Produk::query();
 
             if ($request->filled('nama_produk')) {
                 $query->where('nama_produk', 'LIKE', '%' . $request->input('nama_produk') . '%');

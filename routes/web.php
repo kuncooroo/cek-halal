@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProdukController;
 use App\Http\Controllers\Admin\BeritaController;
@@ -21,19 +21,24 @@ Route::get('/berita', [PageController::class, 'berita'])->name('berita.index');
 Route::get('/berita/{id}', [PageController::class, 'beritaDetail'])->name('berita.detail'); // Jika perlu detail
 Route::get('/faq', [PageController::class, 'faq'])->name('faq.index');
 
-// Rute Autentikasi
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
+Route::prefix('admin')
+    ->as('admin.')
+    ->group(function () {
 
-// Grup Rute Admin (Dilindungi middleware auth & role)
-Route::prefix('admin')->middleware(['auth', 'role:admin,superadmin'])->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::middleware('admin')->group(function () {
 
-    Route::resource('produk', ProdukController::class)->names('admin.produk');
-    Route::resource('berita', BeritaController::class)->names('admin.berita');
-    Route::resource('faq', FaqController::class)->names('admin.faq');
+        Route::get('/dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
 
-    // (Anda tidak perlu rute CRUD user karena superadmin mendaftarkan via phpmyadmin)
+        Route::resource('produk', ProdukController::class);
+        Route::resource('berita', BeritaController::class);
+        Route::resource('faq', FaqController::class);
+
+    });
 });
+
+

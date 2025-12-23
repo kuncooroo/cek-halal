@@ -3,199 +3,310 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <!-- Welcome Banner -->
-    <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 mb-8 text-white shadow-lg">
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-3xl font-bold mb-2">Selamat datang kembali, {{ Auth::user()->name }}! </h2>
-                <p class="text-blue-100 text-lg">Anda login sebagai <span class="font-semibold bg-white/20 px-3 py-1 rounded-lg">{{ Auth::user()->role }}</span></p>
-            </div>
-            <div class="hidden md:block">
-                <svg class="w-32 h-32 text-white/20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
-                </svg>
-            </div>
-        </div>
-    </div>
+    <div class="flex flex-col xl:flex-row gap-8 max-w-7xl mx-auto">
 
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Total Produk -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        <div class="flex-1 space-y-8 min-w-0">
+
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-900">Overview</h2>
+                    <p class="text-sm text-gray-500 mt-0.5">Hai Admin berikut ringkasan hari ini.</p>
+                </div>
+                <div class="hidden sm:flex items-center space-x-2 text-sm">
+                    <span class="text-gray-500">Today</span>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </div>
-                <span class="text-xs font-semibold text-green-600 bg-green-100 px-2 py-1 rounded-lg">+12%</span>
             </div>
-            <h3 class="text-gray-500 text-sm font-medium mb-1">Total Produk</h3>
-            <p class="text-3xl font-bold text-gray-800">{{ $totalProduk ?? 0 }}</p>
-        </div>
 
-        <!-- Total Berita -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                    </svg>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-blue-50/50 rounded-2xl p-6 border border-blue-100 hover:shadow-sm transition-all">
+                    <h3 class="text-gray-500 text-sm font-medium mb-2">Total Produk</h3>
+                    <div class="flex items-end justify-between">
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-2xl font-bold text-gray-900">{{ $totalProduk ?? 0 }}</span>
+                            <span
+                                class="text-xs font-medium text-green-600 bg-green-100 px-1.5 py-0.5 rounded">+11.01%</span>
+                        </div>
+                        <svg class="w-12 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 48 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2 18L10 12L18 16L26 8L34 14L46 4" />
+                        </svg>
+                    </div>
                 </div>
-                <span class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded-lg">+8%</span>
-            </div>
-            <h3 class="text-gray-500 text-sm font-medium mb-1">Total Berita</h3>
-            <p class="text-3xl font-bold text-gray-800">{{ $totalBerita ?? 0 }}</p>
-        </div>
 
-        <!-- Total FAQ -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-sm transition-all">
+                    <h3 class="text-gray-500 text-sm font-medium mb-2">Total Berita</h3>
+                    <div class="flex items-end justify-between">
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-2xl font-bold text-gray-900">{{ $totalBerita ?? 0 }}</span>
+                            <span class="text-xs font-medium text-gray-600 bg-gray-200 px-1.5 py-0.5 rounded">-0.03%</span>
+                        </div>
+                        <svg class="w-12 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 48 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2 12L14 12L22 18L32 10L46 14" />
+                        </svg>
+                    </div>
                 </div>
-                <span class="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded-lg">+5%</span>
-            </div>
-            <h3 class="text-gray-500 text-sm font-medium mb-1">Total FAQ</h3>
-            <p class="text-3xl font-bold text-gray-800">{{ $totalFaq ?? 0 }}</p>
-        </div>
 
-        <!-- Total Views -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-sm transition-all">
+                    <h3 class="text-gray-500 text-sm font-medium mb-2">Total FAQ</h3>
+                    <div class="flex items-end justify-between">
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-2xl font-bold text-gray-900">{{ $totalFaq ?? 0 }}</span>
+                            <span
+                                class="text-xs font-medium text-green-600 bg-green-100 px-1.5 py-0.5 rounded">+15.03%</span>
+                        </div>
+                        <svg class="w-12 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 48 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2 18L14 10L22 14L32 6L46 8" />
+                        </svg>
+                    </div>
                 </div>
-                <span class="text-xs font-semibold text-red-600 bg-red-100 px-2 py-1 rounded-lg">+24%</span>
-            </div>
-            <h3 class="text-gray-500 text-sm font-medium mb-1">Total Views</h3>
-            <p class="text-3xl font-bold text-gray-800">{{ $totalViews ?? '12.4K' }}</p>
-        </div>
-    </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Recent Products -->
-        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold text-gray-800">Produk Terbaru</h3>
-                <a href="{{ route('admin.produk.index') }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Lihat Semua →</a>
+                <div class="bg-blue-50/50 rounded-2xl p-6 border border-blue-100 hover:shadow-sm transition-all">
+                    <h3 class="text-gray-500 text-sm font-medium mb-2">Total Views</h3>
+                    <div class="flex items-end justify-between">
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-2xl font-bold text-gray-900">{{ $totalViews ?? '12.4K' }}</span>
+                            <span
+                                class="text-xs font-medium text-green-600 bg-green-100 px-1.5 py-0.5 rounded">+6.08%</span>
+                        </div>
+                        <svg class="w-12 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 48 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2 14L10 18L22 8L34 12L46 4" />
+                        </svg>
+                    </div>
+                </div>
             </div>
-            
-            <div class="space-y-4">
-                @forelse($recentProduk ?? [] as $produk)
-                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">
-                                {{ strtoupper(substr($produk->nama ?? 'P', 0, 1)) }}
+                            <h3 class="text-sm font-bold text-gray-900">Recent Products</h3>
+                            <span class="text-xs text-gray-400 px-2 py-1 bg-white rounded border">This Year</span>
+                        </div>
+                        <a href="{{ route('admin.produk.index') }}" class="text-xs text-gray-400 hover:text-gray-600">See
+                            All</a>
+                    </div>
+
+                    <div class="space-y-4">
+                        @forelse($recentProduk ?? [] as $produk)
+                            <div class="flex items-center justify-between group">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">
+                                        {{ strtoupper(substr($produk->nama ?? 'P', 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <h4
+                                            class="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">
+                                            {{ $produk->nama ?? 'Nama Produk' }}</h4>
+                                        <p class="text-xs text-gray-400">{{ Str::limit($produk->deskripsi, 40) }}</p>
+                                    </div>
+                                </div>
+                                <span
+                                    class="text-xs font-mono text-gray-400">{{ $produk->created_at?->format('M d') }}</span>
                             </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">{{ $produk->nama ?? 'Nama Produk' }}</h4>
-                                <p class="text-sm text-gray-500">{{ Str::limit($produk->deskripsi ?? 'Deskripsi produk', 50) }}</p>
+                            <div class="h-px bg-gray-200 w-full"></div>
+                        @empty
+                            <div
+                                class="h-32 flex items-center justify-center text-gray-400 text-sm border border-dashed border-gray-300 rounded-lg">
+                                No products data available
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                    <h3 class="text-sm font-bold text-gray-900 mb-6">Quick Actions</h3>
+                    <div class="space-y-6">
+                        <a href="{{ route('admin.produk.index') }}" class="block group">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-600 group-hover:text-blue-600 font-medium">Tambah Produk</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-gray-800 h-1.5 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('admin.berita.index') }}" class="block group">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-600 group-hover:text-blue-600 font-medium">Tambah Berita</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-gray-800 h-1.5 rounded-full" style="width: 70%"></div>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('admin.faq.index') }}" class="block group">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-600 group-hover:text-blue-600 font-medium">Tambah FAQ</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-gray-800 h-1.5 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </a>
+
+                        <div class="block">
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-600 font-medium">System Status</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-gray-800 h-1.5 rounded-full" style="width: 90%"></div>
                             </div>
                         </div>
-                        <span class="text-xs font-medium text-gray-500">{{ $produk->created_at?->diffForHumans() ?? 'Baru' }}</span>
                     </div>
-                @empty
-                    <div class="text-center py-8 text-gray-500">
-                        <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
-                        </svg>
-                        <p>Belum ada produk</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-bold text-gray-800 mb-6">Quick Actions</h3>
-            
-            <div class="space-y-3">
-                <a href="{{ route('admin.produk.index') }}" class="flex items-center space-x-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors group">
-                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                    </div>
-                    <span class="font-medium text-gray-700 group-hover:text-blue-700">Tambah Produk</span>
-                </a>
-
-                <a href="{{ route('admin.berita.index') }}" class="flex items-center space-x-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors group">
-                    <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                    </div>
-                    <span class="font-medium text-gray-700 group-hover:text-purple-700">Tambah Berita</span>
-                </a>
-
-                <a href="{{ route('admin.faq.index') }}" class="flex items-center space-x-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors group">
-                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                    </div>
-                    <span class="font-medium text-gray-700 group-hover:text-green-700">Tambah FAQ</span>
-                </a>
+                </div>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="mt-8">
-                <h4 class="text-sm font-bold text-gray-800 mb-4">Aktivitas Terakhir</h4>
-                <div class="space-y-3">
-                    <div class="flex items-start space-x-3">
-                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                        <div>
-                            <p class="text-sm text-gray-700 font-medium">Produk ditambahkan</p>
-                            <p class="text-xs text-gray-500">2 jam yang lalu</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                    <h3 class="text-sm font-bold text-gray-900 mb-6">Latest News</h3>
+                    <div class="space-y-4">
+                        @forelse($recentBerita ?? [] as $berita)
+                            @if ($loop->odd)
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-2 h-2 rounded-full bg-blue-400 mt-1.5 flex-shrink-0"></div>
+                                    <div>
+                                        <h4 class="text-sm font-medium text-gray-800">{{ $berita->judul }}</h4>
+                                        <p class="text-xs text-gray-500 mt-1">{{ Str::limit($berita->konten, 50) }}</p>
+                                    </div>
+                                    <span
+                                        class="text-xs text-gray-400 ml-auto whitespace-nowrap">{{ $berita->created_at?->diffForHumans(null, true) }}</span>
+                                </div>
+                            @endif
+                        @empty
+                            <p class="text-xs text-gray-400">Belum ada berita.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gray-50 rounded-2xl p-6 border border-gray-100 flex flex-col justify-center items-center relative">
+                    <h3 class="text-sm font-bold text-gray-900 absolute top-6 left-6">News Distribution</h3>
+                    <div
+                        class="w-32 h-32 rounded-full border-8 border-blue-100 border-t-blue-500 border-r-blue-400 flex items-center justify-center">
+                        <div class="text-center">
+                            <span class="block text-xl font-bold text-gray-800">{{ $totalBerita ?? 0 }}</span>
+                            <span class="text-[10px] text-gray-400 uppercase">Total</span>
                         </div>
                     </div>
-                    <div class="flex items-start space-x-3">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                        <div>
-                            <p class="text-sm text-gray-700 font-medium">Berita dipublikasikan</p>
-                            <p class="text-xs text-gray-500">5 jam yang lalu</p>
+                    <div class="mt-6 w-full px-4">
+                        <div class="flex justify-between items-center text-xs text-gray-600 mb-2">
+                            <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
+                                Published</div>
+                            <span>80%</span>
                         </div>
-                    </div>
-                    <div class="flex items-start space-x-3">
-                        <div class="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
-                        <div>
-                            <p class="text-sm text-gray-700 font-medium">FAQ diupdate</p>
-                            <p class="text-xs text-gray-500">1 hari yang lalu</p>
+                        <div class="flex justify-between items-center text-xs text-gray-600">
+                            <div class="flex items-center"><span class="w-2 h-2 rounded-full bg-blue-100 mr-2"></span>
+                                Draft</div>
+                            <span>20%</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Latest News -->
-    <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-bold text-gray-800">Berita Terbaru</h3>
-            <a href="{{ route('admin.berita.index') }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">Lihat Semua →</a>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @forelse($recentBerita ?? [] as $berita)
-                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="h-40 bg-gradient-to-br from-purple-400 to-blue-500"></div>
-                    <div class="p-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">{{ $berita->judul ?? 'Judul Berita' }}</h4>
-                        <p class="text-sm text-gray-600 mb-3">{{ Str::limit($berita->konten ?? 'Konten berita', 80) }}</p>
-                        <span class="text-xs text-gray-500">{{ $berita->created_at?->diffForHumans() ?? 'Baru' }}</span>
+
+        <div class="w-full xl:w-72 flex-shrink-0 space-y-8 border-l border-gray-100 pl-0 xl:pl-8 mt-4 xl:mt-0">
+
+            <div>
+                <h3 class="text-sm font-bold text-gray-900 mb-4">Notifications</h3>
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-gray-900">You fixed a bug.</p>
+                            <p class="text-[10px] text-gray-400">Just now</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-gray-900">New user registered.</p>
+                            <p class="text-[10px] text-gray-400">59 minutes ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-medium text-gray-900">Andi Lane subscribed.</p>
+                            <p class="text-[10px] text-gray-400">Today, 11:59 AM</p>
+                        </div>
                     </div>
                 </div>
-            @empty
-                <div class="col-span-3 text-center py-8 text-gray-500">
-                    <p>Belum ada berita</p>
+            </div>
+
+            <div>
+                <h3 class="text-sm font-bold text-gray-900 mb-4">Activities</h3>
+                <div class="relative pl-2 border-l border-gray-200 space-y-6">
+                    <div class="relative pl-4">
+                        <div class="absolute -left-1.5 top-1 w-3 h-3 bg-red-400 rounded-full border-2 border-white"></div>
+                        <p class="text-xs font-medium text-gray-800">Changed the style.</p>
+                        <p class="text-[10px] text-gray-400">Just now</p>
+                    </div>
+                    <div class="relative pl-4">
+                        <div class="absolute -left-1.5 top-1 w-3 h-3 bg-yellow-400 rounded-full border-2 border-white">
+                        </div>
+                        <p class="text-xs font-medium text-gray-800">Release a new version.</p>
+                        <p class="text-[10px] text-gray-400">59 minutes ago</p>
+                    </div>
+                    <div class="relative pl-4">
+                        <div class="absolute -left-1.5 top-1 w-3 h-3 bg-blue-400 rounded-full border-2 border-white"></div>
+                        <p class="text-xs font-medium text-gray-800">Submitted a bug.</p>
+                        <p class="text-[10px] text-gray-400">12 hours ago</p>
+                    </div>
+                    <div class="relative pl-4">
+                        <div class="absolute -left-1.5 top-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white">
+                        </div>
+                        <p class="text-xs font-medium text-gray-800">Modified A data in Page X.</p>
+                        <p class="text-[10px] text-gray-400">Today, 11:59 AM</p>
+                    </div>
                 </div>
-            @endforelse
+            </div>
+
+            <div>
+                <h3 class="text-sm font-bold text-gray-900 mb-4">Contacts</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                            <img src="https://ui-avatars.com/api/?name=Natali+Craig&background=random" alt="User">
+                        </div>
+                        <span class="text-xs font-medium text-gray-700">Natali Craig</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                            <img src="https://ui-avatars.com/api/?name=Drew+Cano&background=random" alt="User">
+                        </div>
+                        <span class="text-xs font-medium text-gray-700">Drew Cano</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                            <img src="https://ui-avatars.com/api/?name=Andi+Lane&background=random" alt="User">
+                        </div>
+                        <span class="text-xs font-medium text-gray-700">Andi Lane</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection
