@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin - Warung Soto Vokasi</title>
+    <title>Login Admin - Cek Halal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     @vite(['resources/css/app.css'])
 
@@ -82,7 +82,7 @@
             </div>
 
             <h1 class="text-3xl font-bold text-gray-800 tracking-wide">Admin Login</h1>
-            <p class="text-gray-500 text-sm mt-2">Masuk untuk mengelola Warung Soto Vokasi</p>
+            <p class="text-gray-500 text-sm mt-2">Masuk untuk mengelola Website Cek Halal</p>
         </div>
 
         @if ($errors->any())
@@ -107,7 +107,7 @@
                     </div>
                     <input type="email" name="email"
                         class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500 transition bg-gray-50 text-gray-800"
-                        placeholder="admin@sotovokasi.com" required>
+                        placeholder="admin@gmail.com" required>
                 </div>
             </div>
 
@@ -152,7 +152,7 @@
         <div class="mt-8 pt-6 border-t border-gray-200">
             <div class="flex items-center justify-center space-x-2 text-sm text-gray-500">
                 <span class="text-green-600 font-semibold mr-1">Demo:</span>
-                <span>superadmin@warung-soto.com</span>
+                <span>superadmin@gmail.com</span>
                 <span>|</span>
                 <span>password123</span>
             </div>

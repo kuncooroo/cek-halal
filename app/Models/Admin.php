@@ -2,13 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
-class Admin extends Model
+class Admin extends Authenticatable
 {
-    protected $fillable = ['name', 'email', 'password', 'phone', 'role'];
+    use Notifiable;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'role',
+        'avatar',
+    ];
 
     protected $hidden = ['password'];
+
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar && Storage::disk('public')->exists($this->avatar)
+            ? asset('storage/' . $this->avatar)
+            : asset('images/default-avatar.png');
+    }
 
     public function isAdmin()
     {

@@ -23,7 +23,7 @@ class AdminSeeder extends Seeder
         Admin::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [
-                'name' => 'Admin Warung',
+                'name' => 'Admin',
                 'password' => Hash::make('password123'),
                 'phone' => '081234567891',
                 'role' => 'admin'

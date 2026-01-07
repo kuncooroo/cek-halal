@@ -8,11 +8,9 @@
 </head>
 <body class="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 font-sans antialiased">
 
-    <!-- Navigation -->
     <nav class="bg-white/80 backdrop-blur-lg shadow-sm border-b border-green-100 sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <!-- Logo -->
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,7 +22,6 @@
                     </a>
                 </div>
 
-                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-1">
                     <a href="/" class="px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200 font-medium">
                         Beranda
@@ -46,7 +43,6 @@
                     </a>
                 </div>
 
-                <!-- CTA Button -->
                 <div class="hidden md:block">
                     <a href="{{ route('cek-produk') }}" class="px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +52,6 @@
                     </a>
                 </div>
 
-                <!-- Mobile Menu Button -->
                 <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-700 hover:bg-green-50 rounded-lg">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -64,7 +59,6 @@
                 </button>
             </div>
 
-            <!-- Mobile Menu -->
             <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 space-y-2">
                 <a href="/" class="block px-4 py-2 text-gray-700 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200">
                     Beranda
@@ -91,16 +85,13 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="min-h-screen">
         @yield('content')
     </main>
 
-    <!-- Footer -->
     <footer class="bg-gradient-to-br from-green-900 via-emerald-900 to-teal-900 text-white mt-20">
         <div class="container mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- About -->
                 <div class="md:col-span-2">
                     <div class="flex items-center space-x-3 mb-4">
                         <div class="w-10 h-10 bg-white/10 backdrop-blur-lg rounded-xl flex items-center justify-center">
@@ -132,7 +123,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Links -->
                 <div>
                     <h4 class="text-lg font-bold mb-4 text-green-300">Tautan Cepat</h4>
                     <ul class="space-y-2">
@@ -143,7 +133,6 @@
                     </ul>
                 </div>
 
-                <!-- Contact Info -->
                 <div>
                     <h4 class="text-lg font-bold mb-4 text-green-300">Kontak Kami</h4>
                     <ul class="space-y-3 text-green-100">

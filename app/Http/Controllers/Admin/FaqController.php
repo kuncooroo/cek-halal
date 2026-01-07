@@ -7,10 +7,18 @@ use App\Models\Faq;
 use Illuminate\Http\Request;
 
 class FaqController extends Controller
-{        
-    public function index()
+{
+    public function index(Request $request)
     {
-        $faqs = Faq::latest()->paginate(10);
+        $query = Faq::query();
+
+        if ($request->filled('search')) {
+            $query->where('pertanyaan', 'like', '%' . $request->search . '%')
+                ->orWhere('jawaban', 'like', '%' . $request->search . '%');
+        }
+
+        $faqs = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.faq.index', compact('faqs'));
     }
 
@@ -21,17 +29,23 @@ class FaqController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'pertanyaan' => 'required|string',
-            'jawaban'    => 'required|string',
-        ]);
+        $validated = $request->validate(
+            [
+                'pertanyaan' => 'required|string|max:255',
+                'jawaban'    => 'required|string',
+            ],
+            [
+                'pertanyaan.required' => 'Pertanyaan wajib diisi.',
+                'pertanyaan.max'      => 'Pertanyaan maksimal 255 karakter.',
+                'jawaban.required'    => 'Jawaban wajib diisi.',
+            ]
+        );
 
-        Faq::create([
-            'pertanyaan' => $request->pertanyaan,
-            'jawaban'    => $request->jawaban,
-        ]);
+        Faq::create($validated);
 
-        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil ditambahkan!');
+        return redirect()
+            ->route('admin.faq.index')
+            ->with('success', 'FAQ berhasil ditambahkan.');
     }
 
     public function edit(string $id)
@@ -42,18 +56,24 @@ class FaqController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'pertanyaan' => 'required|string',
-            'jawaban'    => 'required|string',
-        ]);
+        $validated = $request->validate(
+            [
+                'pertanyaan' => 'required|string|max:255',
+                'jawaban'    => 'required|string',
+            ],
+            [
+                'pertanyaan.required' => 'Pertanyaan wajib diisi.',
+                'pertanyaan.max'      => 'Pertanyaan maksimal 255 karakter.',
+                'jawaban.required'    => 'Jawaban wajib diisi.',
+            ]
+        );
 
         $faq = Faq::findOrFail($id);
-        $faq->update([
-            'pertanyaan' => $request->pertanyaan,
-            'jawaban'    => $request->jawaban,
-        ]);
+        $faq->update($validated);
 
-        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil diperbarui!');
+        return redirect()
+            ->route('admin.faq.index')
+            ->with('success', 'FAQ berhasil diperbarui.');
     }
 
     public function destroy(string $id)
@@ -61,6 +81,8 @@ class FaqController extends Controller
         $faq = Faq::findOrFail($id);
         $faq->delete();
 
-        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil dihapus!');
+        return redirect()
+            ->route('admin.faq.index')
+            ->with('success', 'FAQ berhasil dihapus.');
     }
 }

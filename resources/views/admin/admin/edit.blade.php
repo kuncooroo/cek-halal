@@ -1,0 +1,182 @@
+@extends('layouts.admin')
+
+@section('title', 'Edit Admin')
+
+@section('content')
+    <div class="max-w-4xl mx-auto">
+        <div
+            class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+
+            <div class="p-6 border-b border-gray-100 dark:border-slate-700">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white">Edit Admin</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Perbarui data dan hak akses administrator.</p>
+            </div>
+
+            <form action="{{ route('admin.admin.update', $admin) }}" method="POST" enctype="multipart/form-data"
+                class="p-6 space-y-6" novalidate>
+                @csrf
+                @method('PUT')
+
+                <div class="flex items-start space-x-6">
+                    <div class="shrink-0">
+                        <div id="avatarWrapper"
+                            class="h-24 w-24 rounded-full flex items-center justify-center
+               bg-gray-200 dark:bg-slate-700
+               border-2 border-gray-300 dark:border-slate-600">
+
+                            @if (!$admin->avatar)
+                                <svg id="avatarIcon" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-12 w-12 text-gray-500 dark:text-gray-300" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M4.5 20.25a7.5 7.5 0 0115 0" />
+                                </svg>
+                            @endif
+
+                            <img id="avatarPreview" src="{{ $admin->avatar ? $admin->avatar_url : '' }}"
+                                class="{{ $admin->avatar ? '' : 'hidden' }} h-24 w-24 object-cover rounded-full"
+                                alt="Avatar">
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Foto Profil</label>
+                        <input type="file" name="avatar" onchange="previewAvatar(this)" accept="image/*"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-slate-700 dark:file:text-blue-400">
+                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">JPG, PNG, atau GIF. Maksimal 2MB.</p>
+                        @error('avatar')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        {{-- @if ($admin->avatar)
+                            <form action="{{ route('admin.avatar.destroy', $admin) }}" method="POST"
+                                onsubmit="return confirm('Hapus foto profil ini?')" class="mt-2 inline-block">
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit"
+                                    class="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium">
+                                    Hapus foto profil
+                                </button>
+                            </form>
+                        @endif --}}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama
+                            Lengkap <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" id="name" value="{{ old('name', $admin->name) }}"
+                            class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-600 dark:text-white p-2.5 border"
+                            required>
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email
+                            <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" id="email" value="{{ old('email', $admin->email) }}"
+                            class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-600 dark:text-white p-2.5 border"
+                            required>
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nomor
+                            Telepon</label>
+                        <input type="text" name="phone" id="phone" value="{{ old('phone', $admin->phone) }}"
+                            class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-600 dark:text-white p-2.5 border">
+                        @error('phone')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role
+                            <span class="text-red-500">*</span></label>
+                        <select name="role" id="role"
+                            class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-600 dark:text-white p-2.5 border">
+                            <option value="admin" {{ old('role', $admin->role) === 'admin' ? 'selected' : '' }}>
+                                Admin
+                            </option>
+                            <option value="superadmin" {{ old('role', $admin->role) === 'superadmin' ? 'selected' : '' }}>
+                                Super Admin
+                            </option>
+                        </select>
+                        @error('role')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <hr class="border-gray-100 dark:border-slate-700 my-4">
+
+                <div
+                    class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-100 dark:border-yellow-900/30 mb-4">
+                    <h3 class="text-sm font-semibold text-yellow-800 dark:text-yellow-400 mb-2">Ubah Password (Opsional)
+                    </h3>
+                    <p class="text-xs text-yellow-700 dark:text-yellow-500">Biarkan kosong jika tidak ingin mengganti
+                        password.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="password"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password Baru</label>
+                        <input type="password" name="password" id="password"
+                            class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-600 dark:text-white p-2.5 border">
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="password_confirmation"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Konfirmasi Password
+                            Baru</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation"
+                            class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-600 dark:text-white p-2.5 border">
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-4 items-center gap-3">
+                    <a href="{{ route('admin.admin.index') }}"
+                        class="px-5 py-2.5 text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                        Batal
+                    </a>
+                    <button type="submit"
+                        class="px-6 py-2.5 bg-blue-600 text-white font-medium text-sm rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-colors">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = e => {
+                    const img = document.getElementById('avatarPreview');
+                    const icon = document.getElementById('avatarIcon');
+
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+
+                    if (icon) {
+                        icon.classList.add('hidden');
+                    }
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+@endsection

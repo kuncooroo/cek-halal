@@ -4,20 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('beritas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('penulis_id')
+                  ->constrained('penulis')
+                  ->cascadeOnDelete();
             $table->string('judul');
+            $table->string('slug')->unique();
+            $table->string('thumbnail')->nullable();
             $table->text('konten');
-            $table->unsignedBigInteger('user_id');
             $table->timestamp('tanggal_publikasi')->useCurrent();
-            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->timestamps();
-            
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -41,13 +41,11 @@ class PageController extends Controller
         return view('pages.faq', compact('faqs'));
     }
 
-    // Halaman Cek Produk (hanya menampilkan view)
     public function cekProduk()
     {
         return view('pages.cek-produk');
     }
 
-    // Logika PENCARIAN (untuk AJAX)
     public function cariProduk(Request $request)
     {
         $tipe = $request->input('tipe');
@@ -81,7 +79,6 @@ class PageController extends Controller
             }
         }
 
-        // Jika tidak ditemukan
         return response()->json(['message' => 'Produk tidak ditemukan.'], 404);
     }
 }

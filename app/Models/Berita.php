@@ -3,19 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Berita extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
+        'penulis_id',
         'judul',
+        'slug',
+        'thumbnail',
         'konten',
-        'user_id',
         'tanggal_publikasi',
         'status',
     ];
 
-    public function user()
+    public function penulis()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Penulis::class);
     }
 }
