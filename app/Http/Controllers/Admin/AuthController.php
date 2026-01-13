@@ -15,19 +15,36 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
+        $credentials = $request->validate(
+            [
+                'email'    => 'required|email',
+                'password' => 'required|min:6',
+            ],
+            [
+                'email.required' => 'Email wajib diisi.',
+                'email.email'    => 'Format email tidak valid.',
 
-        if (Auth::guard('admin')->attempt($credentials)) {
+                'password.required' => 'Password wajib diisi.',
+                'password.min'      => 'Password minimal 6 karakter.',
+            ]
+        );
+
+        if (Auth::guard('admin')->attempt(
+            $credentials,
+            $request->filled('remember') 
+        )) {
             $request->session()->regenerate();
-            return redirect()->route('admin.dashboard');
+
+            return redirect()
+                ->route('admin.dashboard')
+                ->with('success', 'Berhasil login sebagai admin.');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah',
-        ]);
+        return back()
+            ->withErrors([
+                'email' => 'Email atau password salah.',
+            ])
+            ->withInput($request->only('email'));
     }
 
     public function logout(Request $request)
@@ -37,6 +54,8 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login');
+        return redirect()
+            ->route('admin.login')
+            ->with('success', 'Berhasil logout.');
     }
 }

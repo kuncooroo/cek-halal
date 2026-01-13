@@ -37,29 +37,6 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
-
-        /* Input Custom Style */
-        .input-custom-halal {
-            border: 2.5px solid #1e293b;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 16px;
-            width: 100%;
-            outline: none;
-            background-color: transparent;
-            color: inherit;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-
-        .dark .input-custom-halal {
-            border-color: #94a3b8;
-            color: #f1f5f9;
-        }
-
-        .input-custom-halal:focus {
-            border-color: #3b82f6;
-        }
     </style>
 </head>
 
@@ -74,13 +51,7 @@
             class="w-64 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col transition-all duration-300 dark:bg-slate-800 dark:border-slate-700">
             <div class="h-16 flex items-center px-6 mb-4">
                 <div class="flex items-center space-x-2 text-gray-900 dark:text-white">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" />
-                        </svg>
-                    </div>
-                    <span class="text-lg font-semibold tracking-tight">AdminPanel</span>
+                    <span class="text-lg font-semibold tracking-tight">Dashboard Admin</span>
                 </div>
             </div>
 
@@ -175,29 +146,75 @@
             <header
                 class="h-16 bg-white/80 backdrop-blur-md border-b border-gray-100 flex justify-between items-center px-8 flex-shrink-0 z-10 dark:bg-slate-800/90 dark:border-slate-700">
                 <div class="flex items-center space-x-4">
+
+                    @php
+                        $routeName = Route::currentRouteName();
+                        $segments = explode('.', $routeName);
+
+                        $moduleName = 'Dashboard';
+                        $actionName = '';
+                        $isIndex = true;
+
+                        if (count($segments) >= 2 && $segments[0] === 'admin') {
+                            $rawModule = $segments[1];
+
+                            $moduleName = ucfirst($rawModule);
+                            if ($rawModule === 'faq') {
+                                $moduleName = 'FAQ';
+                            }
+
+                            if (isset($segments[2])) {
+                                $action = $segments[2];
+                                if ($action === 'create') {
+                                    $actionName = 'Tambah Baru';
+                                    $isIndex = false;
+                                } elseif ($action === 'edit') {
+                                    $actionName = 'Edit Data';
+                                    $isIndex = false;
+                                } elseif ($action === 'show') {
+                                    $actionName = 'Detail';
+                                    $isIndex = false;
+                                }
+                            }
+                        }
+                    @endphp
+
                     <nav class="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                        <span class="hover:text-gray-800 dark:hover:text-white cursor-pointer">Admin</span>
-                        <span class="mx-2">/</span>
-                        <span class="text-gray-800 font-medium dark:text-gray-200">
-                            @if (request()->routeIs('admin.dashboard'))
-                                Dashboard
-                            @elseif(request()->routeIs('admin.admin*'))
-                                Kelola Admin
-                            @elseif(request()->routeIs('admin.produk*'))
-                                Produk
-                            @elseif(request()->routeIs('admin.berita*'))
-                                Berita
-                            @elseif(request()->routeIs('admin.penulis*'))
-                                Penulis
-                            @elseif(request()->routeIs('admin.faq*'))
-                                FAQ
-                            @elseif(request()->routeIs('admin.kategori*'))
-                                Kategori
+
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="hover:text-gray-800 dark:hover:text-white transition-colors">
+                            Admin
+                        </a>
+
+                        @if ($routeName !== 'admin.dashboard')
+                            <span class="mx-2 text-gray-400">/</span>
+
+                            @if ($isIndex)
+                                <span class="text-gray-800 font-medium dark:text-gray-200">
+                                    {{ $moduleName }}
+                                </span>
                             @else
-                                Halaman
+                                <a href="{{ route('admin.' . $segments[1] . '.index') }}"
+                                    class="hover:text-gray-800 dark:hover:text-white transition-colors">
+                                    {{ $moduleName }}
+                                </a>
+
+                                <span class="mx-2 text-gray-400">/</span>
+
+
+                                <span class="text-gray-800 font-medium dark:text-gray-200">
+                                    {{ $actionName }}
+                                </span>
                             @endif
-                        </span>
+                        @else
+                            <span class="mx-2 text-gray-400">/</span>
+                            <span class="text-gray-800 font-medium dark:text-gray-200">
+                                Dashboard
+                            </span>
+                        @endif
                     </nav>
+
+
                 </div>
 
                 <div class="flex items-center space-x-4">
@@ -235,32 +252,6 @@
                                             <p class="text-sm text-gray-700 dark:text-gray-200 line-clamp-2">Sertifikat
                                                 untuk produk <b>"Kecap Manis ABC"</b> akan habis dalam 3 hari.</p>
                                             <p class="text-[10px] text-gray-400 mt-1">2 jam yang lalu</p>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#"
-                                    class="block px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors border-b border-gray-100 dark:border-slate-700">
-                                    <div class="flex items-start">
-                                        <div class="flex-1">
-                                            <p class="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-0.5">
-                                                Backup Sistem</p>
-                                            <p class="text-sm text-gray-600 dark:text-gray-300">Database berhasil
-                                                dibackup otomatis.</p>
-                                            <p class="text-[10px] text-gray-400 mt-1">Hari ini, 04:00 AM</p>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#"
-                                    class="block px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <div class="flex items-start">
-                                        <div class="flex-1">
-                                            <p class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-0.5">
-                                                Laporan User</p>
-                                            <p class="text-sm text-gray-600 dark:text-gray-300">Ada laporan baru
-                                                terkait produk roti.</p>
-                                            <p class="text-[10px] text-gray-400 mt-1">Kemarin</p>
                                         </div>
                                     </div>
                                 </a>

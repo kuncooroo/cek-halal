@@ -3,24 +3,39 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProdukController;
-use App\Http\Controllers\Admin\BeritaController;
-use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\ProdukController as AdminProdukController;
+use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\PenulisController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Public\ProdukController;
+use App\Http\Controllers\Public\BeritaController;
+use App\Http\Controllers\Public\FaqController;
+use App\Http\Controllers\Public\TentangController;
+use App\Http\Controllers\Public\KontakController;
 
-Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
-Route::get('/kontak', [PageController::class, 'kontak'])->name('kontak');
-Route::get('/cek-produk', [PageController::class, 'cekProduk'])->name('cek-produk');
-Route::post('/cari-produk', [PageController::class, 'cariProduk'])->name('cari-produk');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/berita', [PageController::class, 'berita'])->name('berita.index');
-Route::get('/berita/{id}', [PageController::class, 'beritaDetail'])->name('berita.detail');
-Route::get('/faq', [PageController::class, 'faq'])->name('faq.index');
+Route::prefix('produk')->group(function () {
+    Route::get('/', [ProdukController::class, 'index'])->name('produk.index');
+    Route::post('/search', [ProdukController::class, 'search'])->name('produk.search');
+    Route::post('/scan-barcode', [ProdukController::class, 'scanBarcode'])->name('produk.scan');
+});
+
+Route::prefix('berita')->group(function () {
+    Route::get('/', [BeritaController::class, 'index'])->name('berita.index');
+    Route::get('/{slug}', [BeritaController::class, 'show'])->name('berita.show');
+});
+
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+
+Route::get('/tentang', [TentangController::class, 'index'])->name('tentang.index');
+
+Route::get('/kontak', [KontakController::class, 'index'])->name('kontak.index');
+Route::post('/kontak/submit', [KontakController::class, 'submit'])->name('kontak.submit');
 
 Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -35,10 +50,10 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-        Route::resource('produk', ProdukController::class);
-        Route::resource('berita', BeritaController::class);
+        Route::resource('produk', AdminProdukController::class);
+        Route::resource('berita', AdminBeritaController::class);
         Route::resource('penulis', PenulisController::class);
-        Route::resource('faq', FaqController::class);
+        Route::resource('faq', AdminFaqController::class);
         Route::resource('kategori', KategoriController::class);
         Route::resource('admin', AdminController::class)->middleware('superadmin');
         Route::delete(

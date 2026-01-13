@@ -11,14 +11,14 @@ return new class extends Migration
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('kategori_id')
-                  ->nullable() 
-                  ->constrained('kategoris') 
-                  ->onDelete('set null'); 
+                ->nullable()
+                ->constrained('kategoris')
+                ->onDelete('set null');
 
-            $table->string('nama_produk');
-            $table->string('nama_produsen');
-            $table->string('nomor_sertifikat_halal')->unique();
-            $table->string('barcode')->nullable()->unique();
+            $table->string('nama_produk', 150);
+            $table->string('nama_produsen', 150);
+            $table->string('nomor_sertifikat_halal', 50)->unique();
+            $table->string('barcode', 30)->nullable()->unique();
             $table->date('tanggal_terbit');
             $table->date('tanggal_kadaluarsa');
             $table->text('deskripsi')->nullable();
