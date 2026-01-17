@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use Illuminate\Http\Request;
+use App\Notifications\AdminNotification;
 
 class FaqController extends Controller
 {
@@ -41,7 +42,17 @@ class FaqController extends Controller
             ]
         );
 
-        Faq::create($validated);
+        $faq = Faq::create($validated);
+
+        /** @var \App\Models\Admin $user */
+        $user = auth()->guard('admin')->user();
+        if ($user) {
+            $user->notify(new AdminNotification(
+                'FAQ baru "' . $faq->pertanyaan . '" berhasil ditambahkan.',
+                'normal',
+                route('admin.faq.index')
+            ));
+        }
 
         return redirect()
             ->route('admin.faq.index')

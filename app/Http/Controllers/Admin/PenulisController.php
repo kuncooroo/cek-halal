@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Penulis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\AdminNotification; 
 
 class PenulisController extends Controller
 {
@@ -40,13 +41,10 @@ class PenulisController extends Controller
             [
                 'nama.required'  => 'Nama penulis wajib diisi.',
                 'nama.max'       => 'Nama penulis maksimal 100 karakter.',
-
                 'email.email'    => 'Format email tidak valid.',
                 'email.unique'   => 'Email ini sudah digunakan oleh penulis lain.',
-
                 'foto.image'     => 'File foto harus berupa gambar.',
                 'foto.max'       => 'Ukuran foto maksimal 2 MB.',
-
                 'aktif.required' => 'Status penulis wajib dipilih.',
             ]
         );
@@ -55,7 +53,17 @@ class PenulisController extends Controller
             $validated['foto'] = $request->file('foto')->store('penulis', 'public');
         }
 
-        Penulis::create($validated);
+        $penulis = Penulis::create($validated);
+
+        /** @var \App\Models\Admin $user */
+        $user = auth()->guard('admin')->user();
+        if ($user) {
+            $user->notify(new AdminNotification(
+                'Penulis baru "' . $penulis->nama . '" berhasil ditambahkan.',
+                'normal',
+                route('admin.penulis.index')
+            ));
+        }
 
         return redirect()
             ->route('admin.penulis.index')
@@ -83,13 +91,10 @@ class PenulisController extends Controller
             [
                 'nama.required'  => 'Nama penulis wajib diisi.',
                 'nama.max'       => 'Nama penulis maksimal 100 karakter.',
-
                 'email.email'    => 'Format email tidak valid.',
                 'email.unique'   => 'Email ini sudah digunakan oleh penulis lain.',
-
                 'foto.image'     => 'File foto harus berupa gambar.',
                 'foto.max'       => 'Ukuran foto maksimal 2 MB.',
-
                 'aktif.required' => 'Status penulis wajib dipilih.',
             ]
         );

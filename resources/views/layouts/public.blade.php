@@ -252,6 +252,8 @@
                             class="{{ request()->routeIs('produk.*') ? 'active' : '' }}">Cek Produk</a></li>
                     <li><a href="{{ route('berita.index') }}"
                             class="{{ request()->routeIs('berita.*') ? 'active' : '' }}">Berita</a></li>
+                    <li><a href="{{ route('testimonial') }}"
+                            class="{{ request()->routeIs('testimonial') ? 'active' : '' }}">Testimoni</a></li>
                     <li><a href="{{ route('tentang.index') }}"
                             class="{{ request()->routeIs('tentang.*') ? 'active' : '' }}">Tentang Kami</a></li>
                     <li><a href="{{ route('kontak.index') }}"

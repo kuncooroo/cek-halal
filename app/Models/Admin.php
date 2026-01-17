@@ -19,7 +19,7 @@ class Admin extends Authenticatable
         'avatar',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'remember_token'];
 
     public function getAvatarUrlAttribute()
     {

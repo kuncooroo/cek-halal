@@ -19,6 +19,11 @@ class Produk extends Model
         'status',
     ];
 
+    protected $casts = [
+        'tanggal_terbit' => 'date',
+        'tanggal_kadaluarsa' => 'date',
+    ];
+
     public function kategori(): BelongsTo
     {
         return $this->belongsTo(Kategori::class);

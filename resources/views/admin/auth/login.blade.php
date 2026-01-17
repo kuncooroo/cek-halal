@@ -129,11 +129,6 @@
                 Sign In
             </button>
         </form>
-
-        <div class="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
-            <span class="text-green-600 font-semibold">Demo:</span>
-            superadmin@gmail.com | password123
-        </div>
     </div>
 
     <script>

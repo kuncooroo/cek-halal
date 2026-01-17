@@ -56,14 +56,18 @@
                     <thead
                         class="bg-gray-100 text-xs uppercase text-gray-600 font-semibold tracking-wider border-b dark:bg-slate-700/50 dark:text-gray-300 dark:border-slate-700">
                         <tr>
+                            <th class="px-6 py-4 w-10">No</th>
                             <th class="px-6 py-4 w-1/3">Pertanyaan</th>
                             <th class="px-6 py-4">Jawaban</th>
                             <th class="px-6 py-4 text-right w-32">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
-                        @forelse($faqs as $faq)
+                        @forelse($faqs as $index => $faq)
                             <tr class="hover:bg-gray-50 transition-colors duration-150 dark:hover:bg-slate-700/30">
+                                <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
+                                    {{ $loop->iteration }}
+                                </td>
                                 <td class="px-6 py-4">
                                     <div class="font-semibold text-gray-900 dark:text-white">{{ $faq->pertanyaan }}</div>
                                 </td>

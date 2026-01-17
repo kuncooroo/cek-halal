@@ -37,6 +37,15 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #e2e8f0;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -120,6 +129,16 @@
                     <span class="text-sm font-medium">FAQ</span>
                 </a>
 
+                <a href="{{ route('admin.testimoni.index') }}"
+                    class="flex items-center space-x-3 px-3 py-2 rounded-lg group transition-colors {{ request()->routeIs('admin.testimoni*') ? 'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-slate-700 dark:hover:text-white' }}">
+                    <svg class="w-5 h-5 {{ request()->routeIs('admin.testimoni*') ? 'text-gray-900 dark:text-white' : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-white' }}"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                    <span class="text-sm font-medium">Testimoni</span>
+                </a>
+
                 @if ($currentAdmin && $currentAdmin->role === 'superadmin')
                     <p class="px-2 text-xs font-medium text-purple-500 uppercase tracking-wider mb-2 mt-6">Super Admin
                     </p>
@@ -194,10 +213,16 @@
                                     {{ $moduleName }}
                                 </span>
                             @else
-                                <a href="{{ route('admin.' . $segments[1] . '.index') }}"
-                                    class="hover:text-gray-800 dark:hover:text-white transition-colors">
-                                    {{ $moduleName }}
-                                </a>
+                                @if ($segments[1] === 'profile')
+                                    <span class="text-gray-800 font-medium dark:text-gray-200">
+                                        {{ $moduleName }}
+                                    </span>
+                                @else
+                                    <a href="{{ route('admin.' . $segments[1] . '.index') }}"
+                                        class="hover:text-gray-800 dark:hover:text-white transition-colors">
+                                        {{ $moduleName }}
+                                    </a>
+                                @endif
 
                                 <span class="mx-2 text-gray-400">/</span>
 
@@ -223,9 +248,13 @@
                         <button onclick="toggleNotificationDropdown()"
                             class="p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-slate-700 dark:hover:text-white transition-all relative focus:outline-none"
                             title="Notifikasi">
-                            <div
-                                class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse">
-                            </div>
+
+                            @if (isset($adminNotifications) && $adminNotifications->count() > 0)
+                                <div
+                                    class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse">
+                                </div>
+                            @endif
+
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -238,29 +267,74 @@
                             <div
                                 class="px-4 py-2 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
                                 <h3 class="text-sm font-bold text-gray-900 dark:text-white">Notifikasi</h3>
-                                <button class="text-[10px] text-blue-600 dark:text-blue-400 hover:underline">Tandai
-                                    dibaca</button>
+                                @if (isset($adminNotifications) && $adminNotifications->count() > 0)
+                                    <span class="text-[10px] text-blue-600 dark:text-blue-400 font-medium">
+                                        {{ $adminNotifications->count() }} Baru
+                                    </span>
+                                @endif
                             </div>
 
                             <div class="max-h-64 overflow-y-auto custom-scrollbar">
-                                <a href="#"
-                                    class="block px-4 py-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors border-l-4 border-red-500 bg-red-50/30 dark:bg-red-900/10">
-                                    <div class="flex items-start">
-                                        <div class="flex-1">
-                                            <p class="text-xs font-semibold text-red-600 dark:text-red-400 mb-0.5">
-                                                Segera Expired</p>
-                                            <p class="text-sm text-gray-700 dark:text-gray-200 line-clamp-2">Sertifikat
-                                                untuk produk <b>"Kecap Manis ABC"</b> akan habis dalam 3 hari.</p>
-                                            <p class="text-[10px] text-gray-400 mt-1">2 jam yang lalu</p>
+                                @forelse($adminNotifications ?? [] as $notif)
+                                    @php
+                                        $level = $notif->data['level'] ?? 'normal';
+                                        $bgColor = match ($level) {
+                                            'important' => 'bg-red-50/50 hover:bg-red-50 border-red-500 dark:bg-red-900/10 dark:hover:bg-red-900/20',
+                                            'medium' => 'bg-yellow-50/50 hover:bg-yellow-50 border-yellow-500 dark:bg-yellow-900/10 dark:hover:bg-yellow-900/20',
+                                            'info' => 'bg-blue-50/50 hover:bg-blue-50 border-blue-500 dark:bg-blue-900/10 dark:hover:bg-blue-900/20',
+                                            default => 'hover:bg-gray-50 border-transparent dark:hover:bg-slate-700/50',
+                                        };
+                                        $textColor = match ($level) {
+                                            'important' => 'text-red-600 dark:text-red-400',
+                                            'medium' => 'text-yellow-600 dark:text-yellow-400',
+                                            'info' => 'text-blue-600 dark:text-blue-400',
+                                            default => 'text-gray-900 dark:text-gray-100',
+                                        };
+                                    @endphp
+
+                                    <a href="{{ route('admin.notifications.read', $notif->id) }}"
+                                        class="block px-4 py-3 transition-colors border-l-4 {{ $bgColor }}">
+                                        <div class="flex items-start">
+                                            <div class="flex-1">
+                                                @if ($level === 'important')
+                                                    <p
+                                                        class="text-[10px] font-bold text-red-600 dark:text-red-400 uppercase tracking-wider mb-0.5">
+                                                        Penting</p>
+                                                @elseif($level === 'medium')
+                                                    <p
+                                                        class="text-[10px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider mb-0.5">
+                                                        Peringatan</p>
+                                                @elseif($level === 'info')
+                                                    <p
+                                                        class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-0.5">
+                                                        Info</p>
+                                                @endif
+
+                                                <p
+                                                    class="text-sm {{ $level === 'normal' ? 'text-gray-700 dark:text-gray-200' : $textColor }} line-clamp-2">
+                                                    {{ $notif->data['message'] ?? 'Notifikasi baru' }}
+                                                </p>
+                                                <p class="text-[10px] text-gray-400 mt-1">
+                                                    {{ $notif->created_at->diffForHumans() }}</p>
+                                            </div>
                                         </div>
+                                    </a>
+                                @empty
+                                    <div class="px-4 py-6 text-center">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Tidak ada notifikasi baru.
+                                        </p>
                                     </div>
-                                </a>
+                                @endforelse
                             </div>
 
                             <div class="px-4 py-2 border-t border-gray-100 dark:border-slate-700 text-center">
-                                <a href="#"
-                                    class="text-xs font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors">Lihat
-                                    Semua Notifikasi</a>
+                                <form action="{{ route('admin.notifications.markAllRead') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="text-xs font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors w-full">
+                                        Tandai semua dibaca
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

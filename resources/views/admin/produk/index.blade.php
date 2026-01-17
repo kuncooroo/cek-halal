@@ -55,6 +55,7 @@
                     <thead
                         class="bg-gray-100 text-xs uppercase text-gray-600 font-semibold tracking-wider border-b dark:bg-slate-700/50 dark:text-gray-300 dark:border-slate-700">
                         <tr>
+                            <th class="px-6 py-4 w-10">No</th>
                             <th class="px-6 py-4">Produk</th>
                             <th class="px-6 py-4">Produsen</th>
                             <th class="px-6 py-4">Sertifikat Halal</th>
@@ -64,8 +65,10 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
-                        @forelse($produks as $produk)
+                        @forelse($produks as $index => $produk)
                             <tr class="hover:bg-gray-50 transition-colors duration-150 dark:hover:bg-slate-700/30">
+                                <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
+                                    {{ $loop->iteration }}
                                 <td class="px-6 py-4">
                                     <div class="font-semibold text-gray-900 dark:text-white">{{ $produk->nama_produk }}
                                     </div>

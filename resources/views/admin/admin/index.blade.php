@@ -57,6 +57,7 @@
                     <thead
                         class="bg-gray-100 text-xs uppercase text-gray-600 font-semibold tracking-wider border-b dark:bg-slate-700/50 dark:text-gray-300 dark:border-slate-700">
                         <tr>
+                            <th class="px-6 py-4 w-10">No</th>
                             <th class="px-6 py-4 w-20">Avatar</th>
                             <th class="px-6 py-4">Nama</th>
                             <th class="px-6 py-4">Email</th>
@@ -66,8 +67,10 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
-                        @forelse($admins as $admin)
+                        @forelse($admins as $index => $admin)
                             <tr class="hover:bg-gray-50 transition-colors duration-150 dark:hover:bg-slate-700/30">
+                                <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
+                                    {{ $loop->iteration }}
                                 <td class="px-6 py-4">
                                     <div
                                         class="w-10 h-10 rounded-full flex items-center justify-center

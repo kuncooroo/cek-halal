@@ -8,6 +8,7 @@ use App\Models\Penulis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\AdminNotification;
 
 class BeritaController extends Controller
 {
@@ -37,7 +38,7 @@ class BeritaController extends Controller
         return view('admin.berita.create', compact('penulis'));
     }
 
-    public function store(Request $request)
+      public function store(Request $request)
     {
         $validated = $request->validate(
             [
@@ -51,18 +52,13 @@ class BeritaController extends Controller
             [
                 'penulis_id.required' => 'Penulis wajib dipilih.',
                 'penulis_id.exists'   => 'Penulis tidak valid.',
-
                 'judul.required'      => 'Judul berita wajib diisi.',
                 'judul.max'           => 'Judul berita maksimal 255 karakter.',
-
                 'konten.required'     => 'Konten berita wajib diisi.',
-
                 'thumbnail.image'     => 'Thumbnail harus berupa gambar.',
                 'thumbnail.max'       => 'Ukuran thumbnail maksimal 2 MB.',
-
                 'tanggal_publikasi.required' => 'Tanggal publikasi wajib diisi.',
                 'tanggal_publikasi.date'     => 'Format tanggal publikasi tidak valid.',
-
                 'status.required'     => 'Status berita wajib dipilih.',
                 'status.in'           => 'Status berita tidak valid.',
             ]
@@ -89,7 +85,17 @@ class BeritaController extends Controller
             $data['thumbnail'] = $request->file('thumbnail')->store('berita', 'public');
         }
 
-        Berita::create($data);
+        $berita = Berita::create($data);
+
+        /** @var \App\Models\Admin $user */
+        $user = auth()->guard('admin')->user();
+        if ($user) {
+            $user->notify(new AdminNotification(
+                'Berita baru "' . $berita->judul . '" berhasil diterbitkan.',
+                'normal', 
+                route('admin.berita.index')
+            ));
+        }
 
         return redirect()
             ->route('admin.berita.index')

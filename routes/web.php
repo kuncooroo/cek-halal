@@ -8,8 +8,10 @@ use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\PenulisController;
+use App\Http\Controllers\Admin\TestimoniController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\ProdukController;
 use App\Http\Controllers\Public\BeritaController;
@@ -37,6 +39,9 @@ Route::get('/tentang', [TentangController::class, 'index'])->name('tentang.index
 Route::get('/kontak', [KontakController::class, 'index'])->name('kontak.index');
 Route::post('/kontak/submit', [KontakController::class, 'submit'])->name('kontak.submit');
 
+Route::get('/testimoni', [App\Http\Controllers\Public\TestimonialController::class, 'index'])->name('testimonial');
+Route::post('/testimoni/store', [App\Http\Controllers\Public\TestimonialController::class, 'store'])->name('testimonial.store');
+
 Route::prefix('admin')->as('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.store');
@@ -55,6 +60,15 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::resource('penulis', PenulisController::class);
         Route::resource('faq', AdminFaqController::class);
         Route::resource('kategori', KategoriController::class);
+        Route::resource('testimoni', TestimoniController::class);
+        Route::patch('testimoni/{testimoni}/approve', [TestimoniController::class, 'approve'])
+            ->name('testimoni.approve');
+        Route::patch('testimoni/{testimoni}/reject', [TestimoniController::class, 'reject'])
+            ->name('testimoni.reject');
+        Route::delete('testimoni/{testimoni}', [TestimoniController::class, 'destroy'])
+            ->name('testimoni.destroy');
+        Route::get('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
+        Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
         Route::resource('admin', AdminController::class)->middleware('superadmin');
         Route::delete(
             'admin/{admin}/avatar',

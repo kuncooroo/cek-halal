@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use App\Notifications\AdminNotification;
 
 class KategoriController extends Controller
 {
@@ -16,7 +17,8 @@ class KategoriController extends Controller
             $query->where('nama_kategori', 'like', '%' . $request->search . '%');
         }
 
-        $kategoris = $query->orderBy('created_at', 'asc')->paginate(10);
+        $kategoris = $query->latest()->paginate(10);
+        
         return view('admin.kategori.index', compact('kategoris'));
     }
 
@@ -39,7 +41,17 @@ class KategoriController extends Controller
             ]
         );
 
-        Kategori::create($validated);
+        $kategori = Kategori::create($validated);
+
+        /** @var \App\Models\Admin $user */
+        $user = auth()->guard('admin')->user();
+        if ($user) {
+            $user->notify(new AdminNotification(
+                'Kategori baru "' . $kategori->nama_kategori . '" berhasil dibuat.',
+                'medium',
+                route('admin.kategori.index')
+            ));
+        }
 
         return redirect()->route('admin.kategori.index')
             ->with('success', 'Kategori berhasil ditambahkan.');

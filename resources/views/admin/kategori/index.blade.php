@@ -82,7 +82,7 @@
                         @forelse($kategoris as $index => $kategori)
                             <tr class="hover:bg-gray-50 transition-colors duration-150 dark:hover:bg-slate-700/30">
                                 <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
-                                    {{ $loop->iteration }}
+                                    {{ $index + $kategoris->firstItem() }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="font-semibold text-gray-900 dark:text-white">{{ $kategori->nama_kategori }}

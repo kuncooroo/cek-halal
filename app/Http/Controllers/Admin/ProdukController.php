@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Notifications\AdminNotification;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\Controller;
 use App\Models\Produk;
 use App\Models\Kategori;
@@ -65,7 +67,18 @@ class ProdukController extends Controller
             ]
         );
 
-        Produk::create($validated);
+        $produk = Produk::create($validated);
+
+        /** @var \App\Models\Admin $user */
+        $user = auth()->guard('admin')->user();
+        
+        if ($user) {
+            $user->notify(new AdminNotification(
+                'Produk baru "' . $produk->nama_produk . '" berhasil ditambahkan.',
+                'medium', 
+                route('admin.produk.index')
+            ));
+        }
 
         return redirect()
             ->route('admin.produk.index')

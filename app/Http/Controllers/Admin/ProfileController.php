@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
+use App\Notifications\AdminNotification; 
 
 class ProfileController extends Controller
 {
@@ -20,6 +19,7 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        /** @var \App\Models\Admin $user */
         $user = Auth::guard('admin')->user();
 
         $request->validate([
@@ -49,7 +49,14 @@ class ProfileController extends Controller
 
         $user->save(); 
 
-        dd(get_class(Auth::guard('admin')->user()));
+        if ($user) {
+            $user->notify(new AdminNotification(
+                'Profil akun Anda berhasil diperbarui.',
+                'normal',
+                route('admin.profile.edit')
+            ));
+        }
+
         return back()->with('success', 'Profil berhasil diperbarui.');
     }
 }

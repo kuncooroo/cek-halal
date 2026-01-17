@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use App\Notifications\AdminNotification; 
 
 class AdminController extends Controller
 {
@@ -51,12 +52,22 @@ class AdminController extends Controller
             $validated['avatar'] = $this->processImage($request->file('avatar'), 'create');
         }
 
-        Admin::create($validated);
+        $newAdmin = Admin::create($validated);
 
         Log::info('Admin created successfully', [
             'by_admin_id' => auth()->guard('admin')->id(),
             'created_email' => $validated['email']
         ]);
+
+        /** @var \App\Models\Admin $user */
+        $user = auth()->guard('admin')->user();
+        if ($user) {
+            $user->notify(new AdminNotification(
+                'Admin baru "' . $newAdmin->name . '" telah ditambahkan.',
+                'important', 
+                route('admin.admin.index')
+            ));
+        }
 
         return redirect()
             ->route('admin.admin.index')
