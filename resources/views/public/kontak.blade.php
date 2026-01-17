@@ -475,59 +475,45 @@
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
     const alertBox = document.getElementById('alertBox');
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        // Disable button
+
         submitBtn.disabled = true;
         submitBtn.textContent = 'Mengirim...';
-        
-        // Get form data
+
         const formData = new FormData(contactForm);
-        const data = Object.fromEntries(formData.entries());
-        
-        // Send AJAX request
+
         fetch('{{ route("kontak.submit") }}', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
             },
-            body: JSON.stringify(data)
+            body: formData
         })
-        .then(response => response.json())
+        .then(res => res.json())
         .then(result => {
             if (result.success) {
-                // Show success message
                 alertBox.className = 'alert success';
                 alertBox.textContent = result.message;
-                
-                // Reset form
                 contactForm.reset();
-                
-                // Hide alert after 5 seconds
+
                 setTimeout(() => {
                     alertBox.style.display = 'none';
                 }, 5000);
             } else {
-                throw new Error(result.message || 'Terjadi kesalahan');
+                throw new Error(result.message);
             }
         })
-        .catch(error => {
-            // Show error message
+        .catch(err => {
             alertBox.className = 'alert error';
             alertBox.textContent = 'Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.';
-            console.error('Error:', error);
+            console.error(err);
         })
         .finally(() => {
-            // Re-enable button
             submitBtn.disabled = false;
             submitBtn.textContent = 'Kirim Pesan';
-            
-            // Scroll to alert
-            alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            alertBox.scrollIntoView({ behavior: 'smooth' });
         });
     });
 </script>

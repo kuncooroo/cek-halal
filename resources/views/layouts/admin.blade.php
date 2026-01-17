@@ -129,6 +129,17 @@
                     <span class="text-sm font-medium">FAQ</span>
                 </a>
 
+                {{-- MENU BARU: PESAN KONTAK --}}
+                <a href="{{ route('admin.kontak.index') }}"
+                    class="flex items-center space-x-3 px-3 py-2 rounded-lg group transition-colors {{ request()->routeIs('admin.kontak*') ? 'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-slate-700 dark:hover:text-white' }}">
+                    <svg class="w-5 h-5 {{ request()->routeIs('admin.kontak*') ? 'text-gray-900 dark:text-white' : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-white' }}"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-sm font-medium">Pesan Kontak</span>
+                </a>
+
                 <a href="{{ route('admin.testimoni.index') }}"
                     class="flex items-center space-x-3 px-3 py-2 rounded-lg group transition-colors {{ request()->routeIs('admin.testimoni*') ? 'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-slate-700 dark:hover:text-white' }}">
                     <svg class="w-5 h-5 {{ request()->routeIs('admin.testimoni*') ? 'text-gray-900 dark:text-white' : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-white' }}"

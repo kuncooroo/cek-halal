@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProdukController as AdminProdukController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\KontakController as AdminKontakController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\PenulisController;
 use App\Http\Controllers\Admin\TestimoniController;
@@ -60,6 +61,12 @@ Route::prefix('admin')->as('admin.')->group(function () {
         Route::resource('penulis', PenulisController::class);
         Route::resource('faq', AdminFaqController::class);
         Route::resource('kategori', KategoriController::class);
+
+        Route::get('/kontak', [AdminKontakController::class, 'index'])->name('kontak.index');
+        Route::get('/kontak/{id}', [AdminKontakController::class, 'show'])->name('kontak.show');
+        Route::post('/kontak/{id}/reply', [AdminKontakController::class, 'reply'])->name('kontak.reply');
+        Route::delete('/kontak/{id}', [AdminKontakController::class, 'destroy'])->name('kontak.destroy');
+
         Route::resource('testimoni', TestimoniController::class);
         Route::patch('testimoni/{testimoni}/approve', [TestimoniController::class, 'approve'])
             ->name('testimoni.approve');
@@ -67,8 +74,10 @@ Route::prefix('admin')->as('admin.')->group(function () {
             ->name('testimoni.reject');
         Route::delete('testimoni/{testimoni}', [TestimoniController::class, 'destroy'])
             ->name('testimoni.destroy');
+            
         Route::get('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
         Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
+        
         Route::resource('admin', AdminController::class)->middleware('superadmin');
         Route::delete(
             'admin/{admin}/avatar',
