@@ -3,610 +3,348 @@
 @section('title', 'Cek Halal Indonesia - Platform Verifikasi Sertifikasi Halal')
 
 @push('styles')
-<style>
-    /* =========================================
-       1. GLOBAL VARIABLES & RESET
-       ========================================= */
-    :root {
-        --primary-color: #2ab5c8; /* Biru muda sesuai referensi gambar */
-        --primary-dark: #2399a9;
-        --secondary-color: #1a4444;
-        --text-color: #666;
-        --bg-light: #f8f9fa;
-    }
+    <style>
+        :root {
+            --primary-green: #38a169;
+            /* Warna hijau sesuai gambar */
+            --dark-green: #276749;
+            --accent-yellow: #f6e05e;
+            --text-gray: #4a5568;
+            --light-bg: #f7fafc;
+        }
 
-    /* =========================================
-       2. NEW HERO SECTION (SESUAI GAMBAR)
-       ========================================= */
-    .hero {
-        /* Gambar Background Pemandangan */
-        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=2070&auto=format&fit=crop'); 
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        position: relative;
-        min-height: 70vh; /* Tinggi layar penuh */
-        display: flex;
-        align-items: center;
-        padding-bottom: 6rem; /* Memberi ruang untuk search bar melayang */
-    }
+        /* 1. HERO SECTION */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
 
-    .hero-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 3rem;
-        width: 100%;
-        position: relative;
-        z-index: 2;
-    }
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
 
-    .hero-content {
-        max-width: 800px;
-    }
+        .hero-content p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
 
-    /* Teks tulisan tangan kecil di atas judul */
-    .hero-subtitle {
-        font-family: 'Brush Script MT', cursive; 
-        font-size: 2rem;
-        color: rgba(255,255,255,0.9);
-        margin-bottom: 0.5rem;
-        display: block;
-        letter-spacing: 1px;
-    }
+        /* 2. SEARCH WIDGET (Melayang di atas Hero) */
+        .search-container {
+            max-width: 1000px;
+            margin: -80px auto 0;
+            background: rgba(45, 138, 106, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 15px;
+            position: relative;
+            z-index: 20;
+        }
 
-    .hero-content h1 {
-        font-size: 4.5rem;
-        font-weight: 800;
-        color: white;
-        line-height: 1.1;
-        margin-bottom: 2.5rem;
-        text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
+        .search-container h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
 
-    .hero-buttons {
-        display: flex;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
-
-    /* Tombol Umum */
-    .btn {
-        padding: 1rem 2.5rem;
-        border-radius: 50px; /* Bentuk bulat (Pill shape) */
-        text-decoration: none;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.3s;
-        border: none;
-        cursor: pointer;
-        font-size: 1rem;
-    }
-
-    .btn-primary {
-        background: var(--primary-color);
-        color: white;
-        box-shadow: 0 4px 15px rgba(42, 181, 200, 0.4);
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-3px);
-        background: var(--primary-dark);
-        box-shadow: 0 8px 25px rgba(42, 181, 200, 0.5);
-    }
-
-    .btn-secondary {
-        background: rgba(255,255,255,0.1);
-        color: white;
-        border: 2px solid white;
-        backdrop-filter: blur(5px);
-    }
-
-    .btn-secondary:hover {
-        background: white;
-        color: var(--primary-color);
-    }
-
-    /* =========================================
-       3. FLOATING SEARCH WIDGET (BARU)
-       ========================================= */
-    .search-widget-wrapper {
-        position: relative;
-        margin-top: -5rem; /* Menarik widget ke atas agar menumpuk hero */
-        z-index: 10;
-        padding: 0 3rem;
-        margin-bottom: 2rem;
-    }
-
-    .search-widget {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
-
-    .search-group {
-        flex: 1;
-        min-width: 200px;
-        padding-right: 1.5rem;
-        border-right: 1px solid #eee;
-    }
-
-    .search-group:last-child {
-        border-right: none;
-        padding-right: 0;
-        flex: 0 0 auto;
-    }
-
-    .search-label {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--secondary-color);
-        margin-bottom: 0.5rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .search-input {
-        width: 100%;
-        border: none;
-        outline: none;
-        color: #555;
-        font-size: 1rem;
-        background: transparent;
-        font-weight: 500;
-    }
-
-    .search-input::placeholder {
-        color: #aaa;
-    }
-
-    .btn-search {
-        background: var(--primary-color);
-        color: white;
-        padding: 1rem 3rem;
-        border-radius: 50px;
-        border: none;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .btn-search:hover {
-        background: var(--primary-dark);
-        transform: translateY(-2px);
-    }
-
-    /* =========================================
-       4. ORIGINAL SECTIONS STYLING (DIKEMBALIKAN)
-       ========================================= */
-    
-    /* Common Section Styles */
-    .section-header {
-        text-align: center;
-        margin-bottom: 3rem;
-    }
-
-    .section-label {
-        color: var(--primary-color);
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .section-title {
-        font-size: 2.8rem;
-        font-weight: 800;
-        color: var(--secondary-color);
-        margin-bottom: 1rem;
-    }
-
-    .section-description {
-        font-size: 1.1rem;
-        color: var(--text-color);
-        max-width: 700px;
-        margin: 0 auto;
-        line-height: 1.8;
-    }
-
-    /* Stats Section */
-    .stats-section {
-        padding: 6rem 3rem 4rem; /* Padding atas agak besar krn search bar */
-        background: var(--bg-light);
-    }
-
-    .stats-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 3rem;
-    }
-
-    .stat-card {
-        text-align: center;
-        padding: 2rem;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        transition: transform 0.3s;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .stat-number {
-        font-size: 3.5rem;
-        font-weight: 800;
-        color: var(--primary-color);
-        margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-        font-size: 1.1rem;
-        color: var(--text-color);
-        font-weight: 500;
-    }
-
-    /* About Section */
-    .about-section {
-        padding: 5rem 3rem;
-        background: white;
-    }
-    .about-container {
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-
-    /* About Info Section (Dark Teal) */
-    .about-info-section {
-        padding: 5rem 3rem;
-        background: linear-gradient(135deg, #2d7b7b 0%, #1e5555 100%); /* Warna asli dipertahankan utk kontras */
-    }
-
-    .about-info-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4rem;
-        align-items: center;
-    }
-
-    .about-image-main {
-        width: 100%;
-        height: 500px;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 10rem;
-        overflow: hidden;
-    }
-
-    .about-info-content {
-        color: white;
-    }
-
-    .about-info-content .section-label { color: #c8e6e6; }
-    .about-info-content .section-title { color: white; }
-    .about-info-content p {
-        color: rgba(255,255,255,0.9);
-        margin-bottom: 1.5rem;
-        line-height: 1.8;
-    }
-
-    /* Features Section */
-    .features-section {
-        padding: 5rem 3rem;
-        background: white;
-    }
-
-    .features-container {
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-
-    .features-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2.5rem;
-        margin-top: 3rem;
-    }
-
-    .feature-card {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        padding: 2.5rem;
-        border-radius: 15px;
-        text-align: center;
-        transition: all 0.3s;
-        border: 2px solid transparent;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        border-color: var(--primary-color);
-        box-shadow: 0 10px 30px rgba(42, 181, 200, 0.1);
-    }
-
-    .feature-icon {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(135deg, var(--primary-color) 0%, #2399a9 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.5rem;
-        margin: 0 auto 1.5rem;
-        color: white;
-    }
-
-    .feature-card h3 {
-        font-size: 1.4rem;
-        color: var(--secondary-color);
-        margin-bottom: 1rem;
-        font-weight: 700;
-    }
-
-    .feature-card p {
-        color: var(--text-color);
-        line-height: 1.8;
-        margin-bottom: 1.5rem;
-    }
-
-    .learn-more {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .learn-more:hover { gap: 0.8rem; }
-
-    /* CTA Section */
-    .cta-section {
-        padding: 5rem 3rem;
-        background: var(--bg-light);
-        text-align: center;
-    }
-
-    .cta-container {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    /* =========================================
-       5. RESPONSIVE MEDIA QUERIES
-       ========================================= */
-    @media (max-width: 968px) {
-        /* Hero & Search */
-        .hero-content h1 { font-size: 3rem; }
-        
-        .search-widget {
-            flex-direction: column;
-            align-items: stretch;
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
             gap: 1.5rem;
+        }
+
+        .search-group label {
+            display: block;
+            color: white;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-group input,
+        .search-group select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid white;
+            color: white;
+            padding: 0.5rem 0;
+        }
+
+        .btn-search {
+            background: var(--accent-yellow);
+            color: #444;
+            padding: 0.75rem 2.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* 3. STATS SECTION (Grid 4 Kotak) */
+        .stats-section {
+            padding: 100px 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--primary-green);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h4 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 4. ABOUT SECTION */
+        .about-section {
+            background: white;
+            padding: 100px 1rem;
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-images {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .about-images img {
+            border-radius: 20px;
+            width: 50%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        /* 5. SERVICES/FEATURES GRID (Green Background) */
+        .features-section {
+            background: var(--primary-green);
+            padding: 80px 1rem;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: white;
             padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
         }
 
-        .search-group {
-            border-right: none;
-            border-bottom: 1px solid #eee;
-            padding-right: 0;
-            padding-bottom: 1rem;
+        .feature-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
         }
 
-        .search-widget-wrapper { margin-top: -3rem; padding: 0 1.5rem; }
-        
-        /* Sections */
-        .stats-container {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-        
-        .about-info-container {
-            grid-template-columns: 1fr;
-            gap: 3rem;
+        .btn-feature {
+            background: var(--primary-green);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.8rem;
         }
 
-        .features-grid { grid-template-columns: 1fr; }
-        .section-title { font-size: 2rem; }
-    }
+        /* 6. CTA SECTION */
+        .cta-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 0 1rem;
+        }
 
-    @media (max-width: 576px) {
-        .hero-content h1 { font-size: 2.5rem; }
-        .stats-container { grid-template-columns: 1fr; }
-        .hero-buttons { flex-direction: column; width: 100%; }
-        .btn { width: 100%; justify-content: center; }
-        .hero { padding-bottom: 4rem; }
-    }
-</style>
+        .cta-image img {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+
+            .search-widget,
+            .stats-section,
+            .about-container,
+            .features-grid,
+            .cta-section {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 @endpush
 
 @section('content')
-<section class="hero">
-    <div class="hero-container">
+    <section class="hero">
         <div class="hero-content">
-            <span class="hero-subtitle">Jaminan kehalalan untuk ketenangan hati</span>
-            
-            <h1>Platform Verifikasi<br>Halal Terpercaya</h1>
-            
+            <h1>Platform Verifikasi Halal<br>Terpercaya</h1>
+            <p>Jaminan Halal Untuk Ketenangan Hati</p>
         </div>
+    </section>
+
+    <div class="search-container">
+        <h3>Cek Sertifikat Halal</h3>
+        <form action="{{ route('produk.index') }}" method="GET" class="search-form">
+            <div class="search-group">
+                <label>Kata Kunci</label>
+                <input type="text" name="q" placeholder="Nama Produk / Sertifikat">
+            </div>
+            <div class="search-group">
+                <label>Tipe Produk</label>
+                <select name="type">
+                    <option value="">Semua Tipe</option>
+                    <option value="makanan">Makanan & Minuman</option>
+                    <option value="kosmetik">Kosmetik</option>
+                </select>
+            </div>
+            <div class="search-group">
+                <label>Produsen</label>
+                <input type="text" name="produsen" placeholder="Nama Perusahaan">
+            </div>
+            <button type="submit" class="btn-search">Cari</button>
+        </form>
     </div>
-</section>
 
-<div class="search-widget-wrapper">
-    <form action="{{ route('produk.index') }}" method="GET" class="search-widget">
-        <div class="search-group">
-            <label class="search-label">Kata Kunci</label>
-            <input type="text" name="q" class="search-input" placeholder="Nama Produk / Sertifikat..." required>
+    <section class="stats-section">
+        <div class="stats-info">
+            <h2 style="font-size: 2.5rem; color: #2d3748;">Mempermudah Proses Verifikasi Halal</h2>
+            <p style="color: #718096; line-height: 1.8;">Kami menyediakan platform yang memudahkan Anda untuk mengecek
+                status sertifikasi halal produk dengan database yang terintegrasi langsung dengan sistem resmi BPJPH.</p>
         </div>
-
-        <div class="search-group">
-            <label class="search-label">Tipe Produk</label>
-            <select name="type" class="search-input" style="cursor: pointer;">
-                <option value="">Semua Kategori</option>
-                <option value="makanan">Makanan & Minuman</option>
-                <option value="kosmetik">Kosmetik</option>
-                <option value="obat">Obat-obatan</option>
-            </select>
-        </div>
-
-        <div class="search-group">
-            <label class="search-label">Produsen</label>
-            <input type="text" name="produsen" class="search-input" placeholder="Nama PT/UMKM...">
-        </div>
-
-        <div class="search-group">
-            <button type="submit" class="btn-search">
-                    Cari Halal
-            </button>
-        </div>
-    </form>
-</div>
-
-
-<section id="about" class="about-section">
-    <div class="about-container">
-        <div class="section-header">
-            <h2 class="section-title">Verifikasi Halal Dibuat Mudah</h2>
-            <p class="section-description">
-                Kami menyediakan platform yang memudahkan Anda untuk mengecek status sertifikasi halal produk dengan database yang terintegrasi langsung dengan sistem resmi BPJPH.
-            </p>
-        </div>
-    </div>
-</section>
-<section class="stats-section">
-    <div class="stats-container">
-        <div class="stat-card">
-            <div class="stat-number">{{ number_format($totalProduk ?? 12500) }}</div>
-            <div class="stat-label">Produk Terdaftar</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">{{ number_format($totalProdusen ?? 340) }}</div>
-            <div class="stat-label">Produsen</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">7+</div>
-            <div class="stat-label">Tahun Pengalaman</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number">100K+</div>
-            <div class="stat-label">Pengguna</div>
-        </div>
-    </div>
-</section>
-
-<section class="about-info-section">
-    <div class="about-info-container">
-        <div class="about-image-wrapper">
-            <div class="about-image-main">
-                📱
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>20 <i class="fi fi-rr-box"></i></h4>
+                <p>Produk Terdaftar</p>
+            </div>
+            <div class="stat-card">
+                <h4>10K <i class="fi fi-rr-users"></i></h4>
+                <p>Pengguna</p>
+            </div>
+            <div class="stat-card">
+                <h4>7+ <i class="fi fi-rr-calendar"></i></h4>
+                <p>Tahun Pengalaman</p>
+            </div>
+            <div class="stat-card">
+                <h4>20 <i class="fi fi-rr-factory"></i></h4>
+                <p>Produsen</p>
             </div>
         </div>
-        <div class="about-info-content">
-            <div class="section-label">TEKNOLOGI MODERN</div>
-            <h2 class="section-title">Tentang Cek Halal Indonesia</h2>
-            <p>
-                Platform Cek Halal dikembangkan dengan teknologi terkini untuk memberikan pengalaman terbaik dalam memverifikasi status sertifikasi halal produk. Kami berkomitmen untuk selalu memberikan informasi yang akurat dan terpercaya.
-            </p>
-            <p>
-                Dengan fitur pencarian yang fleksibel, Anda dapat mencari produk berdasarkan nama produk, nama produsen, nomor sertifikat halal, atau bahkan scan barcode langsung dari kemasan produk.
-            </p>
-            <div class="hero-buttons" style="margin-top: 2rem;">
-                <a href="tel:+622112345678" class="btn btn-secondary">
-                    📞 (021) 123-1234
-                </a>
-                <a href="{{ route('produk.index') }}" class="btn btn-primary" style="background: white; color: var(--secondary-color);">
-                    Cek Produk
-                </a>
+    </section>
+
+    <section class="about-section">
+        <div class="about-container">
+            <div class="about-images">
+                <img src="https://images.unsplash.com/photo-1579027989536-b7b1f875659b?q=80&w=2070" alt="Halal Food">
+                <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=2030" alt="Cosmetic"
+                    style="margin-top: 40px;">
+            </div>
+            <div class="about-text">
+                <h4 style="color: var(--primary-green); margin-bottom: 0;">Layanan Kami</h4>
+                <h2 style="font-size: 2.5rem; margin-top: 10px;">Tentang Cek Halal Indonesia</h2>
+                <p style="color: #718096;">Platform Cek Halal membantu memverifikasi status kehalalan produk secara akurat.
+                    Kami berkomitmen memberikan transparansi informasi bagi konsumen muslim di Indonesia.</p>
+                <div style="margin-top: 2rem;">
+                    <a href="#" class="btn-search" style="text-decoration: none; display: inline-block;">(021) 123-1234</a>
+                    <a href="#" class="btn-feature">Cek Produk</a>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="features-section">
-    <div class="features-container">
-        <div class="section-header">
-            <div class="section-label">LAYANAN KAMI</div>
-            <h2 class="section-title">Fitur Unggulan Platform</h2>
-        </div>
+    <section class="features-section">
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">🔍</div>
-                <h3>Pencarian Produk</h3>
-                <p>Cari produk berdasarkan nama produk untuk mendapatkan informasi sertifikasi halal secara instan.</p>
-                <a href="{{ route('produk.index') }}" class="learn-more">
-                    Coba Sekarang →
-                </a>
+                <img src="https://images.unsplash.com/photo-1534452285544-d4ef5016283d?q=80&w=2070" alt="">
+                <h4>Pencarian Produk</h4>
+                <p style="font-size: 0.8rem; color: #718096;">Cari produk berdasarkan nama untuk info sertifikasi.</p>
+                <a href="{{ route('produk.index') }}" class="btn-service">Cek Sekarang</a>
             </div>
-            
             <div class="feature-card">
-                <div class="feature-icon">🏢</div>
-                <h3>Cari Berdasarkan Produsen</h3>
-                <p>Temukan semua produk halal dari produsen favorit Anda dengan mudah dan cepat.</p>
-                <a href="{{ route('produk.index') }}" class="learn-more">
-                    Coba Sekarang →
-                </a>
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070" alt="">
+                <h4>Berdasarkan Produsen</h4>
+                <p style="font-size: 0.8rem; color: #718096;">Temukan semua produk dari produsen pilihan.</p>
+                <a href="{{ route('produk.index') }}" class="btn-service">Cek Sekarang</a>
             </div>
-            
             <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3>Scan Barcode</h3>
-                <p>Gunakan kamera smartphone untuk scan barcode produk dan dapatkan hasilnya langsung.</p>
-                <a href="{{ route('produk.index') }}" class="learn-more">
-                    Coba Sekarang →
-                </a>
+                <img src="https://images.unsplash.com/photo-1563906267088-b029e7101114?q=80&w=2070" alt="">
+                <h4>Scan Barcode</h4>
+                <p style="font-size: 0.8rem; color: #718096;">Scan kemasan untuk hasil instan.</p>
+                <a href="{{ route('produk.index') }}" class="btn-service">Cek Sekarang</a>
             </div>
-            
             <div class="feature-card">
-                <div class="feature-icon">📄</div>
-                <h3>Verifikasi Sertifikat</h3>
-                <p>Cek keabsahan nomor sertifikat halal untuk memastikan produk terdaftar secara resmi.</p>
-                <a href="{{ route('produk.index') }}" class="learn-more">
-                    Coba Sekarang →
-                </a>
+                <img src="https://images.unsplash.com/photo-1568027762272-e4da8b386fe9?q=80&w=2030" alt="">
+                <h4>Verifikasi Sertifikat</h4>
+                <p style="font-size: 0.8rem; color: #718096;">Cek validitas nomor sertifikat resmi.</p>
+                <a href="{{ route('produk.index') }}" class="btn-service">Cek Sekarang</a>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="cta-section">
-    <div class="cta-container">
-        <div class="section-label">HUBUNGI KAMI</div>
-        <h2 class="section-title">Siap Verifikasi Produk Halal Anda?</h2>
-        <p class="section-description">
-            Mulai gunakan platform kami sekarang untuk memastikan produk yang Anda konsumsi memiliki sertifikasi halal yang valid.
-        </p>
-        <div class="hero-buttons" style="justify-content: center; margin-top: 2rem;">
-            <a href="{{ route('produk.index') }}" class="btn btn-primary">
-                Mulai Cek Produk
-            </a>
-            <a href="{{ route('kontak.index') }}" class="btn btn-secondary" style="background: white; color: var(--primary-color); border-color: var(--primary-color);">
-                Hubungi Kami
-            </a>
+    <section class="cta-section">
+        <div class="cta-text">
+            <h4>Hubungi Kami</h4>
+            <h2 style="font-size: 2.5rem;">Siap Verifikasi Produk Halal Anda?</h2>
+            <p style="color: #718096;">Gunakan platform kami sekarang untuk memastikan produk konsumsi Anda memiliki
+                sertifikat halal yang valid.</p>
+            <div style="margin-top: 2rem;">
+                <a href="{{ route('kontak.index') }}"" class=" btn-search"
+                    style="text-decoration: none; display: inline-block; background: var(--primary-green); color: white;">Hubungi
+                    Kami</a>
+                <a href="{{ route('produk.index') }}"" class=" btn-search"
+                    style="text-decoration: none; display: inline-block; margin-left: 1rem;">Cek
+                    Produk</a>
+            </div>
         </div>
-    </div>
-</section>
+        <div class="cta-image">
+            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2048" alt="Store">
+        </div>
+    </section>
 @endsection

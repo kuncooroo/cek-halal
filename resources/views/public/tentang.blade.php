@@ -3,443 +3,294 @@
 @section('title', 'Tentang Kami - Cek Halal Indonesia')
 
 @push('styles')
-<style>
-    .page-hero {
-        background: linear-gradient(135deg, #2d7b7b 0%, #1e5555 100%);
-        padding: 4rem 3rem 3rem;
-        text-align: center;
-        color: white;
-    }
+    <style>
+        :root {
+            --primary-green: #2d8a6a;
+            --secondary-green: #216a52;
+            --accent-gold: #e9c46a;
+            --text-muted: #718096;
+            --bg-light: #f4f7f6;
+        }
 
-    .page-hero h1 {
-        font-size: 3rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-    }
+        /* Hero Section Sesuai Foto */
+        .page-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2074');
+            background-size: cover;
+            background-position: center;
+            padding: 8rem 2rem;
+            text-align: left;
+            color: white;
+        }
 
-    .page-hero p {
-        font-size: 1.2rem;
-        opacity: 0.9;
-        max-width: 700px;
-        margin: 0 auto;
-    }
+        .page-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .content-wrapper {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 5rem 2rem;
-    }
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 1.5rem;
+        }
 
-    /* Hero About */
-    .about-hero {
-        background: white;
-        padding: 4rem;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        margin-bottom: 4rem;
-        text-align: center;
-    }
+        /* Intro Section */
+        .about-intro {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 6rem;
+        }
 
-    .hero-icon {
-        font-size: 6rem;
-        margin-bottom: 2rem;
-    }
+        .about-text h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 1.5rem;
+        }
 
-    .about-hero h2 {
-        color: #1a4444;
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
-        font-weight: 800;
-    }
+        .about-text p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
 
-    .about-hero p {
-        color: #666;
-        font-size: 1.1rem;
-        line-height: 1.9;
-        max-width: 900px;
-        margin: 0 auto;
-    }
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
 
-    /* Vision & Mission */
-    .vm-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 2.5rem;
-        margin-bottom: 4rem;
-    }
+        /* Nilai - Nilai Kami */
+        .values-section {
+            background: var(--primary-green);
+            padding: 5rem 2rem;
+            margin: 0 calc(-50vw + 50%);
+            color: white;
+        }
 
-    .vm-card {
-        background: white;
-        padding: 3rem;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        text-align: center;
-        transition: transform 0.3s;
-    }
+        .values-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .vm-card:hover {
-        transform: translateY(-5px);
-    }
+        .values-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 4rem;
+            font-weight: 700;
+        }
 
-    .vm-icon {
-        font-size: 5rem;
-        margin-bottom: 1.5rem;
-    }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
 
-    .vm-card h3 {
-        color: #1a4444;
-        font-size: 2rem;
-        margin-bottom: 1.2rem;
-        font-weight: 800;
-    }
+        .value-card {
+            text-align: center;
+        }
 
-    .vm-card p {
-        color: #666;
-        font-size: 1.05rem;
-        line-height: 1.9;
-    }
+        .value-card i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
 
-    /* Content Sections */
-    .content-section {
-        background: white;
-        padding: 3rem;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        margin-bottom: 3rem;
-    }
+        /* Visi & Misi */
+        .vm-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 5rem 0;
+        }
 
-    .content-section h3 {
-        color: #1a4444;
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 3px solid #2d7b7b;
-        font-weight: 800;
-    }
+        .vm-box {
+            padding: 3.5rem;
+            border-radius: 15px;
+        }
 
-    .content-section p {
-        color: #666;
-        font-size: 1.05rem;
-        line-height: 1.9;
-        margin-bottom: 1.5rem;
-    }
+        .visi-box {
+            background: white;
+            color: #1a202c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
 
-    .content-section ul {
-        list-style: none;
-        padding-left: 0;
-    }
+        .misi-box {
+            background: #1a202c;
+            color: white;
+        }
 
-    .content-section li {
-        color: #666;
-        font-size: 1.05rem;
-        line-height: 1.9;
-        margin-bottom: 1rem;
-        padding-left: 2.5rem;
-        position: relative;
-    }
+        /* Features Section */
+        .features-section {
+            background: var(--primary-green);
+            padding: 5rem;
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 6rem;
+        }
 
-    .content-section li:before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        width: 30px;
-        height: 30px;
-        background: linear-gradient(135deg, #2d7b7b 0%, #1e5555 100%);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 1.1rem;
-    }
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            position: relative;
+        }
 
-    /* Values Section */
-    .values-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-    }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
 
-    .value-card {
-        background: linear-gradient(135deg, #f0f9f9 0%, #e0f2f2 100%);
-        padding: 2.5rem;
-        border-radius: 15px;
-        text-align: center;
-        border: 2px solid #c8e6e6;
-        transition: all 0.3s;
-    }
+        .feature-list li {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
 
-    .value-card:hover {
-        transform: translateY(-5px);
-        border-color: #2d7b7b;
-    }
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+        }
 
-    .value-icon {
-        font-size: 3.5rem;
-        margin-bottom: 1.2rem;
-    }
+        /* CTA Footer */
+        .cta-footer {
+            text-align: center;
+            padding: 4rem 0;
+        }
 
-    .value-card h4 {
-        color: #1a4444;
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
-    }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
 
-    .value-card p {
-        color: #555;
-        font-size: 1rem;
-        line-height: 1.7;
-    }
+        .btn-custom {
+            padding: 0.8rem 2.5rem;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+        }
 
-    /* Team Section */
-    .team-section {
-        background: linear-gradient(135deg, #2d7b7b 0%, #1e5555 100%);
-        color: white;
-        padding: 4rem;
-        border-radius: 20px;
-        text-align: center;
-        margin-bottom: 4rem;
-    }
+        .btn-emerald {
+            background: var(--primary-green);
+            color: white;
+        }
 
-    .team-section h3 {
-        font-size: 2.5rem;
-        margin-bottom: 1.2rem;
-        font-weight: 800;
-    }
+        .btn-gold {
+            background: var(--accent-gold);
+            color: #1a202c;
+        }
 
-    .team-section p {
-        font-size: 1.2rem;
-        margin-bottom: 3rem;
-        opacity: 0.9;
-    }
+        @media (max-width: 968px) {
 
-    .team-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 2.5rem;
-        margin-top: 2.5rem;
-    }
+            .about-intro,
+            .vm-section,
+            .features-grid,
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
 
-    .stat-item {
-        text-align: center;
-    }
-
-    .stat-number {
-        font-size: 3rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-}
-
-.stat-label {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    font-weight: 500;
-}
-
-/* CTA Section */
-.cta-section {
-    background: white;
-    padding: 4rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-.cta-section h3 {
-    color: #1a4444;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    font-weight: 800;
-}
-
-.cta-section p {
-    color: #666;
-    font-size: 1.2rem;
-    margin-bottom: 2.5rem;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.cta-buttons {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn {
-    padding: 1.2rem 3rem;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #2d7b7b 0%, #1e5555 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(45, 123, 123, 0.3);
-}
-
-.btn-secondary {
-    background: white;
-    color: #2d7b7b;
-    border: 2px solid #2d7b7b;
-}
-
-.btn-secondary:hover {
-    background: #2d7b7b;
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(45, 123, 123, 0.3);
-}
-
-@media (max-width: 968px) {
-    .vm-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .values-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .btn {
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .page-hero h1 {
-        font-size: 2rem;
-    }
-
-    .about-hero,
-    .content-section,
-    .team-section,
-    .cta-section {
-        padding: 2.5rem 2rem;
-    }
-}
-</style>
+            .btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
 @endpush
+
 @section('content')
-<!-- Page Hero -->
-<section class="page-hero">
-    <h1>Tentang Kami</h1>
-    <p>Mengenal lebih dekat platform verifikasi sertifikasi halal terpercaya</p>
-</section>
-<div class="content-wrapper">
-    <!-- Hero Section -->
-    <div class="about-hero">
-        <div class="hero-icon">🕌</div>
-        <h2>Platform Cek Sertifikasi Halal Indonesia</h2>
-        <p>Cek Halal adalah platform digital yang hadir untuk memudahkan masyarakat Indonesia dalam memverifikasi status sertifikasi halal produk. Kami berkomitmen memberikan informasi yang akurat, cepat, dan terpercaya untuk mendukung gaya hidup halal masyarakat muslim Indonesia.</p>
-    </div>
-    <!-- Vision & Mission -->
-<div class="vm-grid">
-    <div class="vm-card">
-        <div class="vm-icon">🎯</div>
-        <h3>Visi Kami</h3>
-        <p>Menjadi platform terdepan dalam penyediaan informasi sertifikasi halal yang mudah diakses, akurat, dan terpercaya untuk seluruh masyarakat Indonesia.</p>
-    </div>
-    <div class="vm-card">
-        <div class="vm-icon">🚀</div>
-        <h3>Misi Kami</h3>
-        <p>Memberikan layanan verifikasi halal yang cepat dan mudah, meningkatkan kesadaran masyarakat tentang pentingnya produk halal, serta mendukung implementasi UU Jaminan Produk Halal.</p>
-    </div>
-</div>
+    <section class="page-hero">
+        <h1>Tentang Kami</h1>
+    </section>
 
-<!-- About Content -->
-<div class="content-section">
-    <h3>Tentang Platform Kami</h3>
-    <p>Platform Cek Halal dikembangkan sebagai solusi digital untuk menjawab kebutuhan masyarakat dalam mengakses informasi sertifikasi halal produk dengan cepat dan mudah. Dengan database yang terintegrasi dengan sistem resmi BPJPH (Badan Penyelenggara Jaminan Produk Halal), kami memastikan setiap informasi yang disajikan adalah yang paling akurat dan terkini.</p>
-    <p>Sejak diluncurkan, platform kami telah membantu ribuan pengguna dalam memverifikasi status halal produk yang mereka konsumsi sehari-hari. Kami terus berinovasi untuk memberikan fitur-fitur yang lebih baik dan pengalaman pengguna yang optimal.</p>
-</div>
+    <div class="content-wrapper">
+        <div class="about-intro">
+            <div class="about-text">
+                <h2>Platform Cek Sertifikasi Halal Indonesia</h2>
+                <p>Platform Cek Halal dikembangkan sebagai solusi digital untuk menjawab kebutuhan masyarakat dalam
+                    mengakses informasi sertifikasi halal produk dengan cepat dan mudah. Kami memastikan setiap informasi
+                    yang disajikan akurat dan terkini melalui integrasi database resmi.</p>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070" alt="Masjid Image">
+            </div>
+        </div>
 
-<!-- Features -->
-<div class="content-section">
-    <h3>Keunggulan Platform</h3>
-    <ul>
-        <li>Database terintegrasi langsung dengan sistem resmi BPJPH untuk akurasi data terjamin</li>
-        <li>Fitur pencarian fleksibel dengan 4 metode: nama produk, produsen, nomor sertifikat, dan scan barcode</li>
-        <li>Antarmuka yang user-friendly dan mudah digunakan oleh semua kalangan</li>
-        <li>Informasi lengkap meliputi status sertifikasi, tanggal terbit, dan masa berlaku</li>
-        <li>Update data secara berkala untuk memastikan informasi selalu terkini</li>
-        <li>Akses gratis tanpa biaya apapun untuk seluruh masyarakat Indonesia</li>
-        <li>Dapat diakses dari berbagai perangkat (desktop, tablet, smartphone)</li>
-    </ul>
-</div>
+        <section class="values-section">
+            <div class="values-container">
+                <h2>Nilai - Nilai Kami</h2>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <i class="fi fi-rr-shield-check"></i>
+                        <h3>Kepercayaan</h3>
+                        <p>Menyajikan informasi akurat dan dapat dipercaya.</p>
+                    </div>
+                    <div class="value-card">
+                        <i class="fi fi-rr-clock-three"></i>
+                        <h3>Kecepatan</h3>
+                        <p>Layanan verifikasi yang cepat dan responsif.</p>
+                    </div>
+                    <div class="value-card">
+                        <i class="fi fi-rr-handshake"></i>
+                        <h3>Integritas</h3>
+                        <p>Transparansi dan kejujuran dalam setiap layanan.</p>
+                    </div>
+                    <div class="value-card">
+                        <i class="fi fi-rr-bulb"></i>
+                        <h3>Inovasi</h3>
+                        <p>Terus berinovasi untuk pengalaman pengguna yang lebih baik.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<!-- Values -->
-<div class="content-section">
-    <h3>Nilai-Nilai Kami</h3>
-    <div class="values-grid">
-        <div class="value-card">
-            <div class="value-icon">🔒</div>
-            <h4>Kepercayaan</h4>
-            <p>Kami berkomitmen menyajikan informasi yang akurat dan dapat dipercaya</p>
+        <div class="vm-section">
+            <div class="vm-box visi-box">
+                <h3>Visi</h3>
+                <p>Cek Halal adalah platform digital yang hadir untuk memudahkan masyarakat Indonesia dalam memverifikasi
+                    status sertifikasi halal produk. Kami berkomitmen memberikan informasi yang akurat, cepat, dan
+                    terpercaya untuk mendukung gaya hidup halal masyarakat muslim Indonesia.
+                </p>
+            </div>
+            <div class="vm-box misi-box">
+                <h3>Misi</h3>
+                <p>Memberikan layanan verifikasi halal yang cepat dan mudah, meningkatkan kesadaran masyarakat tentang
+                    pentingnya produk halal, serta mendukung implementasi UU Jaminan Produk Halal.</p>
+            </div>
         </div>
-        <div class="value-card">
-            <div class="value-icon">⚡</div>
-            <h4>Kecepatan</h4>
-            <p>Memberikan layanan verifikasi yang cepat dan responsif</p>
-        </div>
-        <div class="value-card">
-            <div class="value-icon">🤝</div>
-            <h4>Integritas</h4>
-            <p>Menjaga transparansi dan kejujuran dalam setiap layanan</p>
-        </div>
-        <div class="value-card">
-            <div class="value-icon">💡</div>
-            <h4>Inovasi</h4>
-            <p>Terus berinovasi untuk pengalaman pengguna yang lebih baik</p>
+
+        <section class="features-section">
+            <h2>Mengapa Memilih Platform Kami</h2>
+            <div class="features-grid">
+                <ul class="feature-list">
+                    <li>Database terintegrasi langsung dengan sistem resmi BPJPH</li>
+                    <li>Fitur pencarian fleksibel dengan 4 metode</li>
+                    <li>Antarmuka user-friendly untuk semua kalangan</li>
+                </ul>
+                <ul class="feature-list">
+                    <li>Update data secara berkala</li>
+                    <li>Akses gratis tanpa biaya untuk seluruh masyarakat</li>
+                    <li>Dapat diakses dari berbagai perangkat</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="cta-footer">
+            <h2>Mulailah Gunakan Platform Kami</h2>
+            <p>Verifikasi status halal produk Anda sekarang dengan mudah dan cepat</p>
+            <div class="btn-group">
+                <a href="{{ route('kontak.index') }}" class="btn-custom btn-emerald">Hubungi Kami</a>
+                <a href="{{ route('produk.index') }}" class="btn-custom btn-gold">Cek Produk</a>
+            </div>
         </div>
     </div>
-</div>
-
-<!-- Team Section -->
-<div class="team-section">
-    <h3>Tim Kami</h3>
-    <p>Platform ini dikembangkan dan dikelola oleh tim profesional yang berdedikasi untuk memberikan layanan terbaik bagi masyarakat Indonesia</p>
-    <div class="team-stats">
-        <div class="stat-item">
-            <div class="stat-number">10+</div>
-            <div class="stat-label">Profesional Berpengalaman</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">24/7</div>
-            <div class="stat-label">Dukungan Sistem</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">{{ number_format($stats['total_produk']) }}+</div>
-            <div class="stat-label">Produk Terdaftar</div>
-        </div>
-    </div>
-</div>
-
-<!-- CTA Section -->
-<div class="cta-section">
-    <h3>Mulai Gunakan Platform Kami</h3>
-    <p>Verifikasi status halal produk Anda sekarang dengan mudah dan cepat</p>
-    <div class="cta-buttons">
-        <a href="{{ route('produk.index') }}" class="btn btn-primary">Cek Produk Sekarang</a>
-        <a href="{{ route('kontak.index') }}" class="btn btn-secondary">Hubungi Kami</a>
-    </div>
-</div>
-</div>
 @endsection

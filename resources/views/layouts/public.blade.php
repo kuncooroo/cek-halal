@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-brands/css/uicons-brands.css'>
     <title>@yield('title', 'Cek Halal Indonesia')</title>
 
     <!-- Google Font (tetap) -->
@@ -278,10 +280,10 @@
                     status sertifikasi halal produk di Indonesia secara akurat.
                 </p>
                 <div class="social-links">
-                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#" title="Facebook"><i class="fi fi-brands-facebook"></i></a>
+                    <a href="#" title="Instagram"><i class="fi fi-brands-instagram"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fi fi-brands-whatsapp"></i></a>
+                    <a href="#" title="Twitter"><i class="fi fi-brands-twitter-alt-circle"></i></a>
                 </div>
             </div>
 
