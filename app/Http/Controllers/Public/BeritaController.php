@@ -10,34 +10,24 @@ class BeritaController extends Controller
 {
     public function index(Request $request)
     {
+        // Menggunakan whereDate agar berita hari ini langsung muncul tanpa peduli jam
         $query = Berita::with('penulis')
             ->where('status', 'published')
-            ->where('tanggal_publikasi', '<=', now());
+            ->whereDate('tanggal_publikasi', '<=', now()->toDateString());
 
-        // Filter berdasarkan pencarian
+        // Filter pencarian
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('judul', 'like', '%' . $search . '%')
-                  ->orWhere('konten', 'like', '%' . $search . '%');
+                    ->orWhere('konten', 'like', '%' . $search . '%');
             });
         }
 
-        // Filter berdasarkan kategori (jika ada sistem kategori berita)
-        if ($request->filled('kategori')) {
-            // Implementasi filter kategori jika diperlukan
-            // $query->where('kategori', $request->kategori);
-        }
-
+        // Urutkan dari yang terbaru berdasarkan tanggal publikasi
         $beritas = $query->latest('tanggal_publikasi')->paginate(9);
-        
-        // Berita featured (terbaru)
-        $featuredBerita = Berita::where('status', 'published')
-            ->where('tanggal_publikasi', '<=', now())
-            ->latest('tanggal_publikasi')
-            ->first();
 
-        return view('public.berita.index', compact('beritas', 'featuredBerita'));
+        return view('public.berita.index', compact('beritas'));
     }
 
     public function show($slug)
@@ -45,12 +35,12 @@ class BeritaController extends Controller
         $berita = Berita::with('penulis')
             ->where('slug', $slug)
             ->where('status', 'published')
-            ->where('tanggal_publikasi', '<=', now())
+            ->whereDate('tanggal_publikasi', '<=', now()->toDateString())
             ->firstOrFail();
 
-        // Berita terkait
+        // Berita terkait (3 berita terbaru lainnya)
         $relatedBeritas = Berita::where('status', 'published')
-            ->where('tanggal_publikasi', '<=', now())
+            ->whereDate('tanggal_publikasi', '<=', now()->toDateString())
             ->where('id', '!=', $berita->id)
             ->latest('tanggal_publikasi')
             ->take(3)
