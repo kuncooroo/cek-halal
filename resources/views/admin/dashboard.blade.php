@@ -16,6 +16,7 @@
         $totalProdukReal = \App\Models\Produk::count();
         $totalExpired = \App\Models\Produk::where('tanggal_kadaluarsa', '<', $now)->count();
         $totalActive = $totalProdukReal - $totalExpired;
+
         $circumference = 283;
         $percentActive = $totalProdukReal > 0 ? $totalActive / $totalProdukReal : 0;
         $dashOffset = $circumference * (1 - $percentActive);
@@ -286,7 +287,8 @@
                     <x-card
                         class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
                         <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
@@ -347,10 +349,12 @@
                         <div class="flex flex-row items-center justify-between">
                             <div class="relative w-28 h-28">
                                 <svg class="w-full h-full transform -rotate-90">
-                                    <circle cx="56" cy="56" r="45" stroke="currentColor"
-                                        stroke-width="10" fill="transparent" class="text-red-500 dark:text-red-900" />
-                                    <circle cx="56" cy="56" r="45" stroke="currentColor"
-                                        stroke-width="10" fill="transparent" stroke-dasharray="283"
+                                    <circle cx="56" cy="56" r="45" stroke="currentColor" stroke-width="10"
+                                        fill="transparent"
+                                        class="{{ $totalProdukReal == 0 ? 'text-gray-200 dark:text-gray-700' : 'text-red-500 dark:text-red-900' }}" />
+
+                                    <circle cx="56" cy="56" r="45" stroke="currentColor" stroke-width="10"
+                                        fill="transparent" stroke-dasharray="283"
                                         stroke-dashoffset="{{ $dashOffset }}"
                                         class="text-blue-600 dark:text-blue-500 transition-all duration-1000 ease-out"
                                         stroke-linecap="round" />
@@ -358,8 +362,7 @@
                                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                                     <span
                                         class="text-xl font-bold text-gray-900 dark:text-white">{{ $totalProdukReal ?? 0 }}</span>
-                                    <span
-                                        class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Total</span>
+                                    <span class="text-[9px] text-gray-400 uppercase font-bold tracking-wider">Total</span>
                                 </div>
                             </div>
 
@@ -405,8 +408,7 @@
                     @forelse($recentBerita ?? [] as $berita)
                         <div
                             class="flex gap-4 p-4 rounded-xl border border-gray-100 dark:border-slate-700 hover:border-blue-100 dark:hover:border-blue-900/50 hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-all group">
-                            <div
-                                class="w-16 h-16 rounded-lg bg-gray-200 dark:bg-slate-700 flex-shrink-0 overflow-hidden">
+                            <div class="w-16 h-16 rounded-lg bg-gray-200 dark:bg-slate-700 flex-shrink-0 overflow-hidden">
                                 @if ($berita->gambar)
                                     <img src="{{ asset('storage/' . $berita->gambar) }}"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">

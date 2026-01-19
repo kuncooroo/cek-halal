@@ -9,9 +9,22 @@ use Illuminate\Support\Facades\Mail;
 
 class KontakController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kontaks = Kontak::latest()->paginate(10);
+        $query = Kontak::latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+        
+            $query->where(function($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('subjek', 'like', "%{$search}%");
+            });
+        }
+
+        $kontaks = $query->paginate(10)->withQueryString();
+
         return view('admin.kontak.index', compact('kontaks'));
     }
 

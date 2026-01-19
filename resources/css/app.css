@@ -1,4 +1,19 @@
-/* resources/css/app.css */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .nav-scrolled {
+        @apply bg-white shadow-lg border-b-0;
+    }
+        
+    .nav-active {
+        @apply text-primary relative;
+    }
+    .nav-active::after {
+        content: '';
+        @apply absolute left-1/2 -bottom-2 -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full;
+    }
+}

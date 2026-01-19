@@ -3,218 +3,12 @@
 @section('title', 'Cek Produk - Sertifikasi Halal')
 
 @push('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-green: #2d8a6a;
-            --dark-green: #1a4444;
-            --accent-yellow: #f6e05e;
-            --text-gray: #718096;
-        }
-
-        .page-hero {
-            background: linear-gradient(rgba(26, 68, 68, 0.9), rgba(26, 68, 68, 0.9)),
-                url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070');
-            background-size: cover;
-            padding: 5rem 3rem 4rem;
-            text-align: center;
-            color: white;
-        }
-
-        .page-hero h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .content-wrapper {
-            max-width: 1000px;
-            margin: -4rem auto 5rem;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Search Box Container */
-        .search-box {
-            background: white;
-            padding: 3rem;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            margin-bottom: 2rem;
-        }
-
-        .search-tabs {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .tab-btn {
-            padding: 1rem;
-            background: #f1f5f9;
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            color: var(--text-gray);
-            border-radius: 12px;
-            transition: 0.3s;
-        }
-
-        .tab-btn.active {
-            background: var(--dark-green);
-            color: white;
-        }
-
-        .search-content {
-            display: none;
-        }
-
-        .search-content.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.8rem;
-            color: var(--dark-green);
-            font-weight: 700;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 1.2rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 4px rgba(45, 138, 106, 0.1);
-        }
-
-        .search-btn {
-            width: 100%;
-            padding: 1.2rem;
-            background: var(--primary-green);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 1.5rem;
-        }
-
-        .search-btn:hover {
-            background: var(--dark-green);
-            transform: translateY(-2px);
-        }
-
-        /* Result Card Styles */
-        .result-box {
-            background: white;
-            padding: 3rem;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            display: none;
-            margin-top: 2rem;
-        }
-
-        .result-box.show {
-            display: block;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        .result-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            padding-bottom: 2rem;
-            border-bottom: 2px solid #f1f5f9;
-            margin-bottom: 2rem;
-        }
-
-        .result-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: var(--primary-green);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        .result-icon.expired {
-            background: #e53e3e;
-        }
-
-        .badge {
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .badge.halal {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .badge.expired {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .detail-row {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .detail-label {
-            font-weight: 700;
-            color: var(--dark-green);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary-green);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+        .bg-grid-pattern {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
         @keyframes fadeInUp {
@@ -228,168 +22,312 @@
                 transform: translateY(0);
             }
         }
-
-        @media (max-width: 768px) {
-            .search-tabs {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .detail-row {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-        }
     </style>
 @endpush
 
 @section('content')
-    <section class="page-hero">
-        <h1>Cek Sertifikasi Halal</h1>
-        <p>Verifikasi status kehalalan produk secara real-time melalui database BPJPH.</p>
+    <section
+        class="relative pt-[100px] pb-[140px] px-[5%] text-center text-white bg-gradient-to-br from-primary to-blue-400 rounded-b-[60px] shadow-[0_10px_30px_rgba(30,136,229,0.2)] overflow-hidden">
+        <div class="absolute inset-0 z-[1] bg-grid-pattern"></div>
+        <div class="absolute z-[1] rounded-full bg-white/10 w-[300px] h-[300px] -top-[100px] -left-[100px] blur-sm"></div>
+        <div class="absolute z-[1] rounded-full bg-white/10 w-[200px] h-[200px] bottom-[20%] -right-[50px]"></div>
+
+        <div class="relative z-[2] max-w-[800px] mx-auto">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+                Cek Sertifikasi Halal Produk
+            </h1>
+            <p class="text-lg md:text-xl opacity-95 leading-relaxed font-light">
+                Verifikasi status sertifikasi halal produk dengan mudah melalui Nama, Produsen, atau Scan Barcode.
+            </p>
+        </div>
     </section>
 
-    <div class="content-wrapper">
-        <div class="search-box">
-            <div class="search-tabs">
-                <button class="tab-btn active" data-tab="nama_produk">📦 Produk</button>
-                <button class="tab-btn" data-tab="nama_produsen">🏢 Produsen</button>
-                <button class="tab-btn" data-tab="nomor_sertifikat">📄 Sertifikat</button>
-                <button class="tab-btn" data-tab="barcode">📱 Barcode</button>
-            </div>
+    <section class="px-[5%] -mt-20 relative z-10">
+        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.1)] max-w-container-lg mx-auto">
 
-            <div id="nama_produk" class="search-content active">
-                <form class="search-form" data-type="nama_produk">
-                    <div class="form-group">
-                        <label>Nama Produk</label>
-                        <input type="text" name="search_value" value="{{ $old_q ?? '' }}" placeholder="Contoh: Mie Instan">
-                    </div>
-                    <button type="submit" class="search-btn">🔍 Cari Data</button>
-                </form>
-            </div>
+            <form id="unifiedSearchForm" class="grid grid-cols-1 lg:grid-cols-[1fr_1fr_1fr_auto_auto] gap-4 items-center">
 
-            <div id="nama_produsen" class="search-content">
-                <form class="search-form" data-type="nama_produsen">
-                    <div class="form-group">
-                        <label>Nama Perusahaan / Produsen</label>
-                        <input type="text" name="search_value" value="{{ $old_produsen ?? '' }}"
-                            placeholder="Contoh: PT Indofood">
-                    </div>
-                    <button type="submit" class="search-btn">🔍 Cari Produsen</button>
-                </form>
-            </div>
+                <div class="relative group">
+                    <input type="text" name="nama_produk" id="inputNamaProduk"
+                        class="w-full p-[18px] border-2 border-gray-200 rounded-xl text-[0.95rem] transition-all focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 placeholder-gray-400"
+                        placeholder="Nama Produk / Hasil Scan...">
+                </div>
 
-            <div id="nomor_sertifikat" class="search-content">
-                <form class="search-form" data-type="nomor_sertifikat">
-                    <div class="form-group">
-                        <label>Nomor Sertifikat Halal</label>
-                        <input type="text" name="search_value" value="{{ $old_no ?? '' }}" placeholder="Contoh: 1770130...">
-                    </div>
-                    <button type="submit" class="search-btn">🔍 Cek Sertifikat</button>
-                </form>
-            </div>
+                <div class="relative group">
+                    <input type="text" name="nama_produsen"
+                        class="w-full p-[18px] border-2 border-gray-200 rounded-xl text-[0.95rem] transition-all focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 placeholder-gray-400"
+                        placeholder="Nama Produsen...">
+                </div>
 
-            <div id="barcode" class="search-content">
-                <form class="search-form" data-type="barcode">
-                    <div class="form-group">
-                        <label>Kode Barcode / EAN</label>
-                        <input type="text" name="search_value" placeholder="Contoh: 899...">
-                    </div>
-                    <button type="submit" class="search-btn">🔍 Cari Barcode</button>
-                </form>
+                <div class="relative group">
+                    <input type="text" name="nomor_sertifikat"
+                        class="w-full p-[18px] border-2 border-gray-200 rounded-xl text-[0.95rem] transition-all focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 placeholder-gray-400"
+                        placeholder="No. Sertifikat...">
+                </div>
+
+                <div class="flex gap-2 h-full">
+                    <button type="button" id="btnScanLive" title="Live Scan Kamera"
+                        class="h-full px-5 py-[18px] bg-white text-navy border-2 border-gray-200 rounded-xl text-xl cursor-pointer transition-all hover:border-primary hover:text-primary hover:bg-gray-50 flex items-center justify-center">
+                        <i class="fa-solid fa-camera"></i>
+                    </button>
+
+                    <button type="button" id="btnScanFile" title="Upload Foto Barcode"
+                        class="h-full px-5 py-[18px] bg-white text-navy border-2 border-gray-200 rounded-xl text-xl cursor-pointer transition-all hover:border-primary hover:text-primary hover:bg-gray-50 flex items-center justify-center">
+                        <i class="fa-solid fa-image"></i>
+                    </button>
+                    <input type="file" id="qrInputFile" accept="image/*" class="hidden">
+                </div>
+
+                <button type="submit"
+                    class="h-full w-full lg:w-auto py-[18px] px-8 bg-gradient-to-br from-primary to-blue-400 text-white border-0 rounded-xl text-base font-bold cursor-pointer transition-all shadow-[0_10px_25px_rgba(30,136,229,0.3)] hover:-translate-y-0.5 hover:shadow-[0_15px_35px_rgba(30,136,229,0.4)] flex items-center justify-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Cari</span>
+                </button>
+            </form>
+
+            <div id="reader-wrapper" class="hidden mt-5 bg-black rounded-xl p-5 text-center relative overflow-hidden">
+                <h4 class="text-white mb-2.5 font-semibold z-10 relative">Arahkan Kamera ke Barcode Produk</h4>
+                <div id="reader" class="w-full max-w-[500px] mx-auto border-none"></div>
+                <button id="btnCloseScanner"
+                    class="mt-4 bg-red-500 text-white border-none py-2.5 px-6 rounded-lg font-bold cursor-pointer hover:bg-red-600 transition-colors z-10 relative">
+                    Tutup Kamera
+                </button>
             </div>
         </div>
+    </section>
 
-        <div id="resultBox" class="result-box"></div>
-    </div>
+    <section class="pt-16 px-[5%] pb-20">
+        <div id="resultBox"
+            class="bg-white p-10 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.1)] max-w-container-lg mx-auto hidden animate-[fadeInUp_0.5s_ease]">
+        </div>
+    </section>
 @endsection
 
 @push('scripts')
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <script>
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        let html5QrcodeScanner = null;
 
-        // 1. Tab Switching Logic
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const tabName = this.getAttribute('data-tab');
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.search-content').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                document.getElementById(tabName).classList.add('active');
+        const scanConfig = {
+            fps: 10,
+            qrbox: {
+                width: 250,
+                height: 150
+            },
+            aspectRatio: 1.0
+        };
+
+        document.getElementById('btnScanLive').addEventListener('click', function() {
+            const wrapper = document.getElementById('reader-wrapper');
+            wrapper.classList.remove('hidden');
+            wrapper.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
             });
-        });
 
-        // 2. Autofill & Auto-search from Home
-        document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const q = urlParams.get('q');
-            const produsen = urlParams.get('produsen');
-            const no = urlParams.get('no');
-
-            if (q) {
-                searchProduct('nama_produk', q);
-            } else if (produsen) {
-                switchTab('nama_produsen');
-                searchProduct('nama_produsen', produsen);
-            } else if (no) {
-                switchTab('nomor_sertifikat');
-                searchProduct('nomor_sertifikat', no);
+            if (!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5QrcodeScanner("reader", scanConfig, false);
+                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
             }
         });
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.search-content').forEach(c => c.classList.remove('active'));
-            document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
-            document.getElementById(tabName).classList.add('active');
+        document.getElementById('btnCloseScanner').addEventListener('click', stopScanner);
+
+        function stopScanner() {
+            const wrapper = document.getElementById('reader-wrapper');
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.clear().then(() => {
+                    html5QrcodeScanner = null;
+                    wrapper.classList.add('hidden');
+                }).catch(err => console.error("Gagal stop scanner", err));
+            } else {
+                wrapper.classList.add('hidden');
+            }
         }
 
-        // 3. Search Handler
-        document.querySelectorAll('.search-form').forEach(form => {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                const type = this.getAttribute('data-type');
-                const val = this.querySelector('input').value;
-                if (val) searchProduct(type, val);
-            });
+        const btnScanFile = document.getElementById('btnScanFile');
+        const qrInputFile = document.getElementById('qrInputFile');
+
+        btnScanFile.addEventListener('click', () => {
+            qrInputFile.click();
         });
 
-        function searchProduct(type, val) {
-            const box = document.getElementById('resultBox');
-            box.innerHTML = `<div class="loading"><div class="spinner"></div><p>Menghubungi database...</p></div>`;
-            box.classList.add('show');
-            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        qrInputFile.addEventListener('change', e => {
+            if (e.target.files.length == 0) return;
 
-            fetch('{{ route("produk.search") }}', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
-                body: JSON.stringify({ search_type: type, search_value: val })
-            })
-                .then(res => res.json())
+            const imageFile = e.target.files[0];
+
+            const html5QrCode = new Html5Qrcode("reader");
+
+            document.getElementById('inputNamaProduk').value = "Memproses gambar...";
+            document.getElementById('inputNamaProduk').disabled = true;
+
+            html5QrCode.scanFile(imageFile, true)
+                .then(decodedText => {
+                    onScanSuccess(decodedText, null);
+                    document.getElementById('inputNamaProduk').disabled = false;
+                })
+                .catch(err => {
+                    alert("Barcode tidak terdeteksi pada gambar ini. Pastikan gambar jelas dan cahaya cukup.");
+                    document.getElementById('inputNamaProduk').value = "";
+                    document.getElementById('inputNamaProduk').disabled = false;
+                    console.error("Error scan file", err);
+                });
+        });
+
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Scan Result: ${decodedText}`);
+
+            const inputProduk = document.getElementById('inputNamaProduk');
+            inputProduk.value = decodedText;
+            inputProduk.classList.add('bg-yellow-100');
+            setTimeout(() => inputProduk.classList.remove('bg-yellow-100'), 800);
+
+            stopScanner();
+            searchProduct('barcode', decodedText);
+        }
+
+        function onScanFailure(error) {}
+
+        document.getElementById('unifiedSearchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const namaProduk = this.querySelector('input[name="nama_produk"]').value.trim();
+            const namaProdusen = this.querySelector('input[name="nama_produsen"]').value.trim();
+            const nomorSertifikat = this.querySelector('input[name="nomor_sertifikat"]').value.trim();
+
+            let searchType = '';
+            let searchValue = '';
+
+            if (namaProduk) {
+                if (/^\d+$/.test(namaProduk) && namaProduk.length > 6) {
+                    searchType = 'barcode';
+                    searchValue = namaProduk;
+                } else {
+                    searchType = 'nama_produk';
+                    searchValue = namaProduk;
+                }
+            } else if (namaProdusen) {
+                searchType = 'nama_produsen';
+                searchValue = namaProdusen;
+            } else if (nomorSertifikat) {
+                searchType = 'nomor_sertifikat';
+                searchValue = nomorSertifikat;
+            } else {
+                alert('Silakan isi salah satu kolom pencarian atau gunakan Scan Barcode');
+                return;
+            }
+
+            searchProduct(searchType, searchValue);
+        });
+
+        function searchProduct(searchType, searchValue) {
+            const resultBox = document.getElementById('resultBox');
+
+            resultBox.innerHTML = `
+                <div class="text-center py-16">
+                    <div class="w-16 h-16 border-4 border-gray-100 border-t-primary rounded-full animate-spin mx-auto mb-5"></div>
+                    <p class="text-gray-500 font-semibold">Mencari data...</p>
+                </div>
+            `;
+            resultBox.classList.remove('hidden');
+            resultBox.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            });
+
+            fetch('{{ route('produk.search') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        search_type: searchType,
+                        search_value: searchValue
+                    })
+                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.success && data.found) {
-                        renderData(data.data);
+                        renderTable(data.data);
                     } else {
-                        box.innerHTML = `<div style="text-align:center; padding:2rem"><h3>❌ Tidak Ditemukan</h3><p>${data.message}</p></div>`;
+                        renderNotFound(data.message);
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    renderNotFound('Terjadi kesalahan koneksi atau server.');
                 });
         }
 
-        function renderData(d) {
-            const box = document.getElementById('resultBox');
-            const badge = d.is_expired ? '<span class="badge expired">KADALUARSA</span>' : '<span class="badge halal">AKTIF / HALAL</span>';
+        function renderTable(products) {
+            const resultBox = document.getElementById('resultBox');
+            if (!Array.isArray(products) || products.length === 0) {
+                renderNotFound('Data tidak valid.');
+                return;
+            }
 
-            box.innerHTML = `
-                <div class="result-header">
-                    <div class="result-icon ${d.is_expired ? 'expired' : ''}">${d.is_expired ? '⚠️' : '✓'}</div>
-                    <div><h2>${d.nama_produk}</h2>${badge}</div>
-                </div>
-                <div class="result-details">
-                    <div class="detail-row"><div class="detail-label">Produsen</div><div class="detail-value">${d.nama_produsen}</div></div>
-                    <div class="detail-row"><div class="detail-label">Nomor Sertifikat</div><div class="detail-value">${d.nomor_sertifikat}</div></div>
-                    <div class="detail-row"><div class="detail-label">Masa Berlaku</div><div class="detail-value">${d.tanggal_kadaluarsa}</div></div>
-                    <div class="detail-row"><div class="detail-label">Kategori</div><div class="detail-value">${d.kategori}</div></div>
-                </div>
+            let html = `
+            <div class="mb-5 border-b border-gray-100 pb-4">
+                <h2 class="m-0 text-2xl font-bold text-navy">Hasil Pencarian</h2>
+                <p class="text-gray-500 mt-1">Ditemukan <strong>${products.length}</strong> produk</p>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl mt-5 bg-white border border-gray-100">
+                <table class="w-full text-sm text-left">
+                    <thead class="text-xs text-white uppercase bg-primary">
+                        <tr>
+                            <th class="px-6 py-4 rounded-tl-xl">NAMA PRODUK</th>
+                            <th class="px-6 py-4">BARCODE/QR</th>
+                            <th class="px-6 py-4">PRODUSEN</th>
+                            <th class="px-6 py-4">NO. SERTIFIKAT</th>
+                            <th class="px-6 py-4 whitespace-nowrap">TGL TERBIT</th>
+                            <th class="px-6 py-4 whitespace-nowrap">TGL KADALUARSA</th>
+                            <th class="px-6 py-4 rounded-tr-xl text-center">STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
             `;
+
+            products.forEach(item => {
+                const statusClass = item.is_expired ?
+                    'bg-red-100 text-red-700 border border-red-200' :
+                    'bg-green-100 text-green-700 border border-green-200';
+
+                const barcodeDisplay = item.barcode ?
+                    `<span class="font-mono bg-gray-100 px-2 py-1 rounded text-gray-700">${item.barcode}</span>` :
+                    '<span class="text-gray-400 italic text-xs">Tidak ada</span>';
+
+                html += `
+                <tr class="bg-white border-b hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 font-bold text-gray-900">${item.nama_produk}</td>
+                    <td class="px-6 py-4">${barcodeDisplay}</td>
+                    <td class="px-6 py-4 text-gray-600 uppercase">${item.nama_produsen}</td>
+                    <td class="px-6 py-4 font-mono text-gray-600">${item.nomor_sertifikat}</td>
+                    <td class="px-6 py-4 text-gray-600 whitespace-nowrap">${item.tanggal_terbit}</td>
+                    <td class="px-6 py-4 text-gray-600 whitespace-nowrap">${item.tanggal_kadaluarsa}</td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="${statusClass} px-3 py-1 rounded-full text-xs font-bold">${item.status_label}</span>
+                    </td>
+                </tr>
+                `;
+            });
+
+            html += `</tbody></table></div>`;
+            resultBox.innerHTML = html;
+        }
+
+        function renderNotFound(msg) {
+            const resultBox = document.getElementById('resultBox');
+            resultBox.innerHTML = `
+            <div class="text-center py-16">
+                <i class="fa-solid fa-circle-xmark text-6xl text-gray-200 mb-5"></i>
+                <h3 class="text-navy font-bold text-xl mb-1">Data Tidak Ditemukan</h3>
+                <p class="text-gray-500">${msg}</p>
+            </div>`;
         }
     </script>
 @endpush

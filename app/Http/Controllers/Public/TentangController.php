@@ -11,13 +11,12 @@ class TentangController extends Controller
 {
     public function index()
     {
-        // Statistik untuk halaman tentang
         $stats = [
             'total_produk' => Produk::where('status', 'aktif')->count(),
             'total_produsen' => Produk::where('status', 'aktif')
                 ->distinct('nama_produsen')
                 ->count('nama_produsen'),
-            'total_pengguna' => 100000, // Bisa diambil dari analytics atau hardcoded
+            'total_pengguna' => 100000, 
             'akurasi' => 99.9
         ];
 

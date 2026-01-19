@@ -1,363 +1,155 @@
 @extends('layouts.public')
 
-@section('title', $berita->judul . ' - Cek Halal Indonesia')
+@section('title', $berita->judul ?? 'Detail Berita - Cek Halal Indonesia')
 
 @push('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root {
-            --primary-green: #2d8a6a;
-            --secondary-green: #216a52;
-            --dark-green: #1a4444;
-            --text-gray: #718096;
-        }
-
-        .article-wrapper {
-            max-width: 900px;
-            margin: 3rem auto 5rem;
-            padding: 0 1.5rem;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
-            margin-bottom: 2rem;
-            color: var(--text-gray);
-            font-size: 0.9rem;
-        }
-
-        .breadcrumb a {
-            color: var(--primary-green);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .breadcrumb span {
-            margin: 0 0.5rem;
-            color: #cbd5e0;
-        }
-
-        /* Article Card */
-        .article-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
-            border: 1px solid #edf2f7;
-        }
-
-        .article-header {
-            padding: 3rem 3rem 1.5rem;
-        }
-
-        .article-category {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: #e6fffa;
-            color: var(--primary-green);
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .article-title {
-            font-size: 2.5rem;
-            color: var(--dark-green);
-            margin-bottom: 1.5rem;
-            line-height: 1.3;
-            font-weight: 800;
-        }
-
-        .article-meta {
-            display: flex;
-            gap: 1.5rem;
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #edf2f7;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .meta-item i {
-            color: var(--primary-green);
-        }
-
-        .article-image {
-            width: 100%;
-            height: 500px;
-            background-size: cover;
-            background-position: center;
-            background-color: #f7fafc;
-        }
-
-        .article-content {
-            padding: 3rem;
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: #2d3748;
-        }
-
-        .article-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        /* Author Box */
-        .author-box {
-            background: #f8faf9;
-            padding: 2rem;
-            border-radius: 15px;
-            margin: 0 3rem 3rem;
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            border: 1px solid #edf2f7;
-        }
-
-        .author-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: var(--primary-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
-        .author-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .author-info h4 {
-            color: var(--dark-green);
-            margin-bottom: 0.3rem;
-            font-weight: 700;
-        }
-
-        .author-info p {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        /* Share Section */
-        .share-section {
-            padding: 2rem 3rem;
-            background: #ffffff;
-            border-top: 1px solid #edf2f7;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .share-buttons {
-            display: flex;
-            gap: 0.8rem;
-        }
-
-        .share-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .share-btn:hover {
-            transform: translateY(-3px);
-            opacity: 0.9;
-        }
-
-        .facebook {
-            background: #3b5998;
-        }
-
-        .twitter {
-            background: #1da1f2;
-        }
-
-        .whatsapp {
-            background: #25d366;
-        }
-
-        /* Related News */
-        .related-news {
-            margin-top: 4rem;
-        }
-
-        .related-title {
-            font-size: 1.8rem;
-            color: var(--dark-green);
-            margin-bottom: 2rem;
-            font-weight: 800;
-        }
-
-        .related-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-
-        .related-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            transition: 0.3s;
-        }
-
-        .related-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .related-img {
-            height: 150px;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .related-info {
-            padding: 1.2rem;
-        }
-
-        .related-info h4 {
-            font-size: 1rem;
-            color: var(--dark-green);
-            font-weight: 700;
-            line-height: 1.4;
-            margin-bottom: 0.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .article-title {
-                font-size: 1.8rem;
-            }
-
-            .article-header,
-            .article-content,
-            .share-section {
-                padding: 1.5rem;
-            }
-
-            .author-box {
-                margin: 1.5rem;
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .related-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .article-image {
-                height: 300px;
-            }
-        }
+        .article-content h2 { font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-top: 2rem; margin-bottom: 1rem; }
+        .article-content h3 { font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .article-content p { margin-bottom: 1.25rem; line-height: 1.8; color: #334155; }
+        .article-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; color: #334155; }
+        .article-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1.25rem; color: #334155; }
+        .article-content blockquote { border-left: 4px solid #ffc107; background-color: #fffbeb; padding: 1rem 1.5rem; margin: 1.5rem 0; font-style: italic; border-radius: 0 0.5rem 0.5rem 0; }
+        .article-content img { border-radius: 0.75rem; max-width: 100%; height: auto; margin: 1.5rem 0; }
+        .article-content a { color: #1e88e5; text-decoration: underline; font-weight: 500; }
     </style>
 @endpush
 
 @section('content')
-    <div class="article-wrapper">
-        <div class="breadcrumb">
-            <a href="{{ route('home') }}">Beranda</a>
-            <span>/</span>
-            <a href="{{ route('berita.index') }}">Berita</a>
-            <span>/</span>
-            <span style="color: var(--text-gray)">Detail Berita</span>
-        </div>
 
-        <article class="article-card">
-            <div class="article-header">
-                <span class="article-category">Informasi Halal</span>
-                <h1 class="article-title">{{ $berita->judul }}</h1>
+    <div class="container px-5 pt-[120px] pb-20">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] gap-10">
+            
+            <div>
+                <a href="{{ route('berita.index') }}" class="inline-flex items-center gap-2 text-primary font-bold text-sm mb-6 hover:underline transition-all">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Berita
+                </a>
 
-                <div class="article-meta">
-                    <div class="meta-item">
-                        <i class="fi fi-rr-calendar"></i>
-                        <span>{{ \Carbon\Carbon::parse($berita->tanggal_publikasi)->translatedFormat('d F Y') }}</span>
-                    </div>
-                    <div class="meta-item">
-                        <i class="fi fi-rr-user"></i>
-                        <span>{{ $berita->penulis->nama ?? 'Admin' }}</span>
-                    </div>
-                    <div class="meta-item">
-                        <i class="fi fi-rr-eye"></i>
-                        <span>{{ rand(120, 500) }} Dilihat</span>
-                    </div>
-                </div>
-            </div>
+                <article class="bg-white rounded-[24px] border border-gray-100 p-6 md:p-10 shadow-sm">
+                    <header class="mb-8">
+                        <span class="inline-block py-1.5 px-3 rounded-lg bg-blue-50 text-primary text-xs font-bold uppercase tracking-wider mb-4">
+                            {{ $berita->kategori->nama ?? 'Info Terkini' }}
+                        </span>
 
-            <div class="article-image"
-                style="background-image: url('{{ $berita->thumbnail ? asset('storage/' . $berita->thumbnail) : 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2070' }}')">
-            </div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold text-navy leading-tight mb-6">
+                            {{ $berita->judul }}
+                        </h1>
 
-            <div class="article-content">
-                {!! nl2br(e($berita->konten)) !!}
-            </div>
+                        <div class="flex flex-wrap items-center gap-y-3 gap-x-6 text-sm text-gray-400 border-b border-gray-100 pb-6">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-regular fa-calendar text-primary"></i>
+                                <span>{{ \Carbon\Carbon::parse($berita->tanggal_publikasi)->translatedFormat('d F Y') }}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-regular fa-user text-primary"></i>
+                                <span>{{ $berita->penulis->name ?? ($berita->penulis->nama ?? 'Admin Redaksi') }}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-regular fa-clock text-primary"></i>
+                                @php
+                                    $wordCount = str_word_count(strip_tags($berita->konten));
+                                    $minutesToRead = ceil($wordCount / 200);
+                                @endphp
+                                <span>{{ $minutesToRead }} Menit Baca</span>
+                            </div>
+                        </div>
+                    </header>
 
-            @if($berita->penulis)
-                <div class="author-box">
-                    <div class="author-avatar">
-                        @if($berita->penulis->foto)
-                            <img src="{{ asset('storage/' . $berita->penulis->foto) }}" alt="{{ $berita->penulis->nama }}">
+                    <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden mb-8">
+                        @php
+                            $mainImage = $berita->gambar ?? $berita->thumbnail;
+                        @endphp
+                        @if ($mainImage)
+                            <img src="{{ asset('storage/' . $mainImage) }}" alt="{{ $berita->judul }}" class="w-full h-full object-cover">
                         @else
-                            <i class="fi fi-rr-user-md"></i>
+                            <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                <i class="fa-regular fa-image text-5xl"></i>
+                            </div>
                         @endif
                     </div>
-                    <div class="author-info">
-                        <h4>{{ $berita->penulis->nama }}</h4>
-                        <p>{{ $berita->penulis->bio ?? 'Kontributor aktif Cek Halal Indonesia yang fokus pada edukasi produk halal.' }}
-                        </p>
+
+                    <div class="article-content text-lg">
+                        {!! $berita->konten !!}
+                    </div>
+
+                    <div class="mt-10 pt-8 border-t border-gray-100">
+                        <span class="block text-sm font-bold text-navy mb-4">Bagikan artikel ini:</span>
+                        <div class="flex gap-3">
+                            <a href="https://wa.me/?text={{ urlencode($berita->judul . ' ' . url()->current()) }}" target="_blank" 
+                               class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-[#25D366] hover:-translate-y-1 transition-transform shadow-md hover:shadow-lg">
+                                <i class="fa-brands fa-whatsapp text-lg"></i>
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank"
+                               class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-[#1877F2] hover:-translate-y-1 transition-transform shadow-md hover:shadow-lg">
+                                <i class="fa-brands fa-facebook-f text-lg"></i>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?text={{ urlencode($berita->judul) }}&url={{ urlencode(url()->current()) }}" target="_blank"
+                               class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-black hover:-translate-y-1 transition-transform shadow-md hover:shadow-lg">
+                                <i class="fa-brands fa-x-twitter text-lg"></i>
+                            </a>
+                            <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link disalin!');" 
+                                class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-gray-400 hover:-translate-y-1 transition-transform shadow-md hover:shadow-lg" title="Salin Link">
+                                <i class="fa-solid fa-link text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <aside class="lg:sticky lg:top-[100px] h-fit">
+                <div class="bg-white rounded-[24px] border border-gray-100 p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-navy mb-5 pb-3 border-b border-gray-100">
+                        Berita Lainnya
+                    </h3>
+
+                    <div class="flex flex-col gap-5">
+                        @forelse($relatedBeritas as $related)
+                            <div class="flex gap-4 group">
+                                <a href="{{ route('berita.show', $related->slug) }}" class="shrink-0 overflow-hidden rounded-xl w-[70px] h-[70px]">
+                                    @php $relatedImg = $related->thumbnail ?? $related->gambar; @endphp
+                                    @if ($relatedImg)
+                                        <img src="{{ asset('storage/' . $relatedImg) }}" alt="{{ $related->judul }}" 
+                                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                                    @else
+                                        <div class="w-full h-full bg-blue-50 flex items-center justify-center text-blue-200">
+                                            <i class="fa-regular fa-image"></i>
+                                        </div>
+                                    @endif
+                                </a>
+
+                                <div>
+                                    <h5 class="font-bold text-sm text-navy leading-snug mb-1 line-clamp-2">
+                                        <a href="{{ route('berita.show', $related->slug) }}" class="hover:text-primary transition-colors">
+                                            {{ $related->judul }}
+                                        </a>
+                                    </h5>
+                                    <span class="text-xs text-gray-400">
+                                        {{ \Carbon\Carbon::parse($related->tanggal_publikasi)->format('d M Y') }}
+                                    </span>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-sm text-gray-400 text-center py-4">Tidak ada berita terkait lainnya.</p>
+                        @endforelse
                     </div>
                 </div>
-            @endif
+            </aside>
 
-            <div class="share-section">
-                <span style="font-weight: 700; color: var(--dark-green)">Bagikan :</span>
-                <div class="share-buttons">
-                    <a href="#" class="share-btn facebook"><i class="fi fi-brands-facebook"></i></a>
-                    <a href="#" class="share-btn twitter"><i class="fi fi-brands-twitter"></i></a>
-                    <a href="#" class="share-btn whatsapp"><i class="fi fi-brands-whatsapp"></i></a>
-                </div>
-            </div>
-        </article>
-
-        @if($relatedBeritas->count() > 0)
-            <div class="related-news">
-                <h2 class="related-title">Berita Terkait</h2>
-                <div class="related-grid">
-                    @foreach($relatedBeritas as $related)
-                        <a href="{{ route('berita.show', $related->slug) }}" class="related-card">
-                            <div class="related-img"
-                                style="background-image: url('{{ $related->thumbnail ? asset('storage/' . $related->thumbnail) : 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2070' }}')">
-                            </div>
-                            <div class="related-info">
-                                <h4>{{ Str::limit($related->judul, 50) }}</h4>
-                                <span style="font-size: 0.8rem; color: var(--text-gray)">
-                                    <i class="fi fi-rr-calendar" style="margin-right: 5px"></i>
-                                    {{ \Carbon\Carbon::parse($related->tanggal_publikasi)->translatedFormat('d M Y') }}
-                                </span>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
+        </div>
     </div>
+
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const articleImages = document.querySelectorAll('.article-content img');
+            articleImages.forEach(img => {
+                img.classList.add('h-auto', 'max-w-full', 'rounded-xl');
+            });
+        });
+    </script>
+@endpush

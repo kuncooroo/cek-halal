@@ -3,185 +3,123 @@
 @section('title', 'Berita & Informasi - Sertifikasi Halal')
 
 @push('styles')
-    <style>
-        :root {
-            --primary-green: #2d8a6a;
-            --secondary-green: #216a52;
-            --bg-light: #f4f7f6;
-        }
-
-        /* Hero Section Sesuai Foto */
-        .page-hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                url('https://images.unsplash.com/photo-1534723452862-4c874018d66d?q=80&w=2070');
-            background-size: cover;
-            background-position: center;
-            padding: 8rem 2rem;
-            text-align: left;
-            color: white;
-        }
-
-        .page-hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .content-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 1.5rem;
-        }
-
-        /* News Grid Sesuai Foto */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .news-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .news-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .news-image {
-            width: 100%;
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .news-content {
-            padding: 2rem;
-            flex-grow: 1;
-        }
-
-        .news-title {
-            font-size: 1.25rem;
-            color: #1a202c;
-            margin-bottom: 1rem;
-            font-weight: 800;
-            line-height: 1.4;
-        }
-
-        .news-excerpt {
-            color: #718096;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        /* Bottom Card Meta */
-        .news-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .btn-selengkapnya {
-            background: var(--primary-green);
-            color: white;
-            padding: 0.6rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        .btn-selengkapnya:hover {
-            background: var(--secondary-green);
-        }
-
-        .news-author {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #4a5568;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .news-author i {
-            font-size: 1.1rem;
-        }
-
-        /* Pagination Styling */
-        .pagination-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: 4rem;
-        }
-
-        @media (max-width: 992px) {
-            .news-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .news-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-hero h1 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 @endpush
 
 @section('content')
-    <section class="page-hero">
-        <h1>Berita</h1>
-    </section>
+    <div class="relative pt-32 pb-16 text-center overflow-hidden">
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(30,136,229,0.05)_0%,transparent_70%)] -z-10 pointer-events-none rounded-full">
+        </div>
 
-    <div class="content-section">
-        @if($beritas->count() > 0)
-            <div class="news-grid">
-                @foreach($beritas as $berita)
-                    <div class="news-card">
-                        <div class="news-image"
-                            style="background-image: url('{{ $berita->thumbnail ? asset('storage/' . $berita->thumbnail) : 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2070' }}')">
-                        </div>
+        <div class="container px-5">
 
-                        <div class="news-content">
-                            <h3 class="news-title">{{ $berita->judul }}</h3>
-                            <p class="news-excerpt">{{ Str::limit(strip_tags($berita->konten), 100) }}</p>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-navy mb-4 tracking-tight leading-tight">
+                Berita & Artikel Halal
+            </h1>
 
-                            <div class="news-footer">
-                                <a href="{{ route('berita.show', $berita->slug) }}" class="btn-selengkapnya">Selengkapnya</a>
-                                <div class="news-author">
-                                    <i class="fi fi-rr-user-md"></i> <span>{{ $berita->penulis->nama ?? 'Admin' }}</span>
+            <p class="text-lg text-gray-text max-w-2xl mx-auto leading-relaxed">
+                Update terbaru seputar sertifikasi halal, regulasi, dan edukasi produk halal untuk masyarakat.
+            </p>
+
+            @if (request('search'))
+                <div
+                    class="mt-8 inline-block bg-white px-6 py-3 rounded-full shadow-lg shadow-black/5 border border-gray-100 animate-fade-in-up">
+                    <p class="text-sm text-gray-text m-0 flex items-center gap-2">
+                        <span>Menampilkan hasil: <strong class="text-navy">"{{ request('search') }}"</strong></span>
+                        <span class="w-px h-4 bg-gray-200 mx-1"></span>
+                        <a href="{{ route('berita.index') }}"
+                            class="text-red-500 font-bold hover:underline text-xs flex items-center gap-1">
+                            <i class="fa-solid fa-xmark"></i> Reset
+                        </a>
+                    </p>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <div class="pb-24 px-5">
+        <div class="container">
+            @if ($beritas->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    @foreach ($beritas as $berita)
+                        <div
+                            class="group bg-white rounded-[20px] border border-gray-100 overflow-hidden flex flex-col h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-200">
+
+                            <div class="relative w-full pt-[60%] bg-blue-50 overflow-hidden">
+                                @php $img = $berita->thumbnail ?? $berita->gambar; @endphp
+
+                                @if ($img)
+                                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                        style="background-image:url('{{ asset('storage/' . $img) }}')">
+                                    </div>
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    </div>
+                                @else
+                                    <div class="absolute inset-0 flex items-center justify-center bg-blue-50 text-blue-200">
+                                        <i class="fa-regular fa-image text-5xl"></i>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="p-7 flex flex-col flex-grow">
+                                <div
+                                    class="flex items-center gap-3 text-xs font-bold text-gray-400 mb-4 uppercase tracking-wider">
+                                    <span class="flex items-center gap-1.5 text-primary">
+                                        <i class="fa-solid fa-user-pen"></i>
+                                        {{ $berita->penulis->name ?? ($berita->penulis->nama ?? 'Admin Redaksi') }}
+                                    </span>
+                                    <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                    <span>{{ \Carbon\Carbon::parse($berita->tanggal_publikasi)->format('d M Y') }}</span>
+                                </div>
+
+                                <h3
+                                    class="text-xl font-extrabold text-navy mb-3 leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                                    {{ $berita->judul }}
+                                </h3>
+
+                                <div class="text-gray-text text-sm leading-relaxed mb-6 line-clamp-3">
+                                    {{ Str::limit(strip_tags($berita->konten), 110) }}
+                                </div>
+
+                                <div class="mt-auto pt-5 border-t border-gray-50">
+                                    <a href="{{ route('berita.show', $berita->slug) }}"
+                                        class="inline-flex items-center gap-2 text-primary font-bold text-sm group/btn">
+                                        Baca Selengkapnya
+                                        <i
+                                            class="fa-solid fa-arrow-right transition-transform duration-300 group-hover/btn:translate-x-1"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
 
-            <div class="pagination-wrapper">
-                {{ $beritas->links() }}
-            </div>
-        @else
-            <div style="text-align: center; padding: 5rem 0;">
-                <h3 style="color: #ccc;">Belum ada berita tersedia.</h3>
-            </div>
-        @endif
+                <div class="mt-16 flex justify-center">
+                    <div class="bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+                        {{ $beritas->withQueryString()->links() }}
+                    </div>
+                </div>
+            @else
+                <div
+                    class="text-center py-24 bg-white rounded-[24px] border border-dashed border-gray-200 max-w-2xl mx-auto shadow-sm">
+                    <div
+                        class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                        <i class="fa-regular fa-newspaper text-5xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-navy mb-2">Belum ada berita tersedia</h3>
+                    <p class="text-gray-text text-lg">Silakan kembali lagi nanti untuk update terbaru.</p>
+
+                    @if (request('search'))
+                        <a href="{{ route('berita.index') }}"
+                            class="inline-flex items-center gap-2 mt-6 text-primary font-bold hover:underline">
+                            <i class="fa-solid fa-arrow-left"></i> Kembali ke Semua Berita
+                        </a>
+                    @endif
+                </div>
+            @endif
+        </div>
     </div>
+
 @endsection

@@ -48,18 +48,6 @@
                         @error('avatar')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
-                        {{-- @if ($admin->avatar)
-                            <form action="{{ route('admin.avatar.destroy', $admin) }}" method="POST"
-                                onsubmit="return confirm('Hapus foto profil ini?')" class="mt-2 inline-block">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit"
-                                    class="text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium">
-                                    Hapus foto profil
-                                </button>
-                            </form>
-                        @endif --}}
                     </div>
                 </div>
 

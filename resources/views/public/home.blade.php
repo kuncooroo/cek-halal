@@ -3,383 +3,296 @@
 @section('title', 'Cek Halal Indonesia - Platform Verifikasi Sertifikasi Halal')
 
 @push('styles')
-    <style>
-        :root {
-            --primary-green: #2d8a6a;
-            --dark-green: #1a4444;
-            --accent-yellow: #f6e05e;
-            --text-gray: #718096;
-            --light-bg: #f8fafc;
-        }
-
-        /* 1. HERO SECTION */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-                url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070');
-            background-size: cover;
-            background-position: center;
-            height: 70vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-        }
-
-        .hero-content h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-        }
-
-        /* 2. SEARCH WIDGET */
-        .search-container {
-            max-width: 1000px;
-            margin: -100px auto 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 3rem;
-            border-radius: 24px;
-            position: relative;
-            z-index: 20;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .search-container h3 {
-            color: var(--dark-green);
-            margin-bottom: 2rem;
-            font-weight: 800;
-            font-size: 1.5rem;
-            text-align: center;
-        }
-
-        .search-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr auto;
-            gap: 2rem;
-        }
-
-        .search-group label {
-            display: block;
-            color: var(--text-gray);
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .search-group input,
-        .search-group select {
-            width: 100%;
-            background: #f1f5f9;
-            border: 2px solid transparent;
-            border-radius: 12px;
-            color: var(--dark-green);
-            padding: 0.8rem 1.2rem;
-            transition: 0.3s;
-            font-weight: 500;
-        }
-
-        .search-group input:focus {
-            outline: none;
-            border-color: var(--primary-green);
-            background: white;
-        }
-
-        .btn-search {
-            background: var(--primary-green);
-            color: white;
-            padding: 0 2.5rem;
-            height: 52px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            align-self: end;
-            transition: 0.3s;
-        }
-
-        .btn-search:hover {
-            background: var(--dark-green);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(45, 138, 106, 0.2);
-        }
-
-        /* 3. STATS SECTION */
-        .stats-section {
-            padding: 120px 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 6rem;
-            align-items: center;
-        }
-
-        .stat-card {
-            background: var(--dark-green);
-            /* Sama dengan Navbar */
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: 24px;
-            text-align: center;
-            transition: 0.3s;
-            border-bottom: 5px solid var(--accent-yellow);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .stat-card h4 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            color: var(--accent-yellow);
-        }
-
-        .stat-card p {
-            font-weight: 600;
-            opacity: 0.9;
-            font-size: 1rem;
-        }
-
-        /* 4. MISI KAMI (Sekarang Hijau Gelap) */
-        .about-section {
-            background: var(--dark-green);
-            padding: 120px 0;
-            color: white;
-            /* Teks jadi putih */
-        }
-
-        .about-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5rem;
-            align-items: center;
-            padding: 0 1.5rem;
-        }
-
-        .about-images img {
-            border-radius: 24px;
-            width: 100%;
-            height: 450px;
-            object-fit: cover;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .about-images img:last-child {
-            margin-top: 40px;
-        }
-
-        /* 5. FITUR UNGGULAN (Sekarang Putih Bersih) */
-        .features-section {
-            background: white;
-            padding: 120px 1.5rem;
-        }
-
-        .features-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--dark-green);
-            /* Card jadi Hijau */
-            padding: 3rem 1.5rem;
-            border-radius: 24px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: none;
-            color: white;
-            /* Teks jadi Putih */
-            box-shadow: 0 10px 30px rgba(45, 138, 106, 0.2);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-15px);
-            background: var(--primary-green);
-            /* Hijau lebih gelap saat hover */
-            box-shadow: 0 20px 40px rgba(26, 68, 68, 0.3);
-        }
-
-        .feature-card i {
-            font-size: 3rem;
-            color: var(--accent-yellow);
-            /* Ikon Kuning biar kontras */
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .feature-card h4 {
-            color: white;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .feature-card p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .btn-service {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.7rem 1.5rem;
-            border-radius: 12px;
-            background: var(--accent-yellow);
-            color: var(--dark-green);
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 0.85rem;
-            transition: 0.3s;
-        }
-
-        .btn-service:hover {
-            background: white;
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 992px) {
-            .search-form {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .stats-section,
-            .about-container,
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 @endpush
 
 @section('content')
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Platform Verifikasi Halal<br>Generasi Terbaru</h1>
-            <p>Memberikan kepastian hukum dan ketenangan batin bagi konsumen cerdas di seluruh Indonesia.</p>
+    <section
+        class="relative min-h-[calc(100vh-80px)] flex items-center pt-10 pb-16 px-5 lg:px-0 bg-[radial-gradient(circle_at_top_right,#eef7ff_0%,#ffffff_60%)] overflow-hidden">
+
+        <div class="container flex flex-col-reverse lg:flex-row items-center justify-between gap-10">
+
+            <div class="flex-1 max-w-2xl z-10 text-center lg:text-left">
+                <h1 class="text-4xl md:text-[3.5rem] font-extrabold leading-[1.2] mb-6 text-navy">
+                    Solusi Halal di <span class="text-primary relative">Setiap Tahap</span> Kehidupan.
+                </h1>
+                <p class="text-lg text-gray-text leading-relaxed mb-10">
+                    Platform verifikasi sertifikasi halal generasi terbaru. Memberikan kepastian hukum dan ketenangan batin
+                    bagi konsumen cerdas di seluruh Indonesia.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
+                    <a href="{{ route('produk.index') }}"
+                        class="inline-flex items-center gap-3 bg-primary text-white px-9 py-4 rounded-full font-bold shadow-lg hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300">
+                        Cek Produk <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="#"
+                        class="group flex items-center gap-3 text-navy font-bold hover:text-primary transition-colors">
+                        <span
+                            class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md text-primary group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-play"></i>
+                        </span>
+                        Lihat Video
+                    </a>
+                </div>
+
+                <div class="mt-10 flex items-center justify-center lg:justify-start gap-4">
+                    <div class="flex -space-x-4">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                            class="w-10 h-10 rounded-full border-[3px] border-white">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                            class="w-10 h-10 rounded-full border-[3px] border-white">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg"
+                            class="w-10 h-10 rounded-full border-[3px] border-white">
+                    </div>
+                    <div class="text-left">
+                        <h5 class="m-0 font-extrabold text-base text-navy">2.5 Juta+</h5>
+                        <span class="text-xs text-gray-text">Produk Terdaftar</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 justify-end relative w-full lg:w-auto hidden lg:flex">
+                <img src="{{ asset('images/logohalal.png') }}" alt="Halal Indonesia"
+                    class="max-w-full h-auto max-h-[550px] rounded-br-[100px] rounded-bl-[100px] [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]">
+            </div>
         </div>
     </section>
 
-    <div class="search-container">
-        <form action="{{ route('produk.index') }}" method="GET" class="search-form">
-            <div class="search-group">
-                <label>Nama Produk</label>
-                <input type="text" name="q" placeholder="Cari Mie Instan, Daging, dll">
-            </div>
-
-            <div class="search-group">
-                <label>Perusahaan</label>
-                <input type="text" name="produsen" placeholder="PT. Nama Perusahaan">
-            </div>
-            <div class="search-group">
-                <label>No Sertifikasi</label>
-                <input type="text" name="no" placeholder="1770130..">
-            </div>
-            <button type="submit" class="btn-search">Cari Data</button>
-        </form>
+    <div class="bg-white border-b border-gray-100 py-8">
+        <div class="container flex flex-wrap justify-center gap-8 md:gap-16">
+            @foreach (['BPJPH', 'LPPOM', 'MUI', 'KEMENAG', 'KOMINFO'] as $stat)
+                <div class="group cursor-default">
+                    <h4
+                        class="text-2xl font-extrabold text-slate-300 group-hover:text-primary transition-colors duration-300">
+                        {{ $stat }}
+                    </h4>
+                </div>
+            @endforeach
+        </div>
     </div>
 
-    <section class="stats-section">
-        <div class="stats-info">
-            <span
-                style="color: var(--primary-green); font-weight: 800; text-transform: uppercase; letter-spacing: 2px;">Data
-                Real-time</span>
-            <h2 style="font-size: 3rem; color: var(--dark-green); line-height: 1.1; margin: 1rem 0;">Integrasi Data Langsung
-                dari BPJPH</h2>
-            <p style="color: var(--text-gray); font-size: 1.1rem; margin-bottom: 2rem;">Akses basis data sertifikasi halal
-                terbesar di Indonesia dengan parameter pencarian yang mendalam dan hasil yang instan.</p>
-            <a href="{{ route('testimonial') }}"
-                style="color: var(--primary-green); font-weight: 700; text-decoration: none;">Lihat Apa Kata Pengguna <i
-                    class="fa-solid fa-arrow-right"></i></a>
-        </div>
-        <div class="stats-grid">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                <div class="stat-card">
-                    <h4>20K+</h4>
-                    <p>Produk Halal</p>
+    <section class="py-20 bg-white">
+        <div class="container">
+            <div class="mb-12 text-center lg:text-left">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-navy mb-4">Layanan <span
+                        class="text-primary">Unggulan</span></h2>
+                <p class="text-gray-text max-w-lg mx-auto lg:mx-0">Akses data sertifikasi halal dengan berbagai metode
+                    pencarian tercanggih.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div
+                    class="bg-pastel-blue p-8 rounded-3xl transition-transform duration-300 hover:-translate-y-2 flex flex-col justify-between min-h-[260px]">
+                    <div>
+                        <div
+                            class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-500 text-xl shadow-sm mb-5">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-navy mb-3">Pencarian Pintar</h4>
+                        <p class="text-gray-text text-sm leading-relaxed">Cari berdasarkan nama produk, merek, atau nomor
+                            sertifikat secara instan.</p>
+                    </div>
                 </div>
-                <div class="stat-card" style="margin-top: 20px;">
-                    <h4>100%</h4>
-                    <p>Akurasi Data</p>
+
+                <div
+                    class="bg-pastel-pink p-8 rounded-3xl transition-transform duration-300 hover:-translate-y-2 flex flex-col justify-between min-h-[260px]">
+                    <div>
+                        <div
+                            class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-pink-500 text-xl shadow-sm mb-5">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-navy mb-3">Scan Barcode</h4>
+                        <p class="text-gray-text text-sm leading-relaxed">Scan barcode kemasan produk untuk validasi status
+                            halal real-time.</p>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <h4>24/7</h4>
-                    <p>Akses Publik</p>
+
+                <div
+                    class="bg-pastel-purple p-8 rounded-3xl transition-transform duration-300 hover:-translate-y-2 flex flex-col justify-between min-h-[260px]">
+                    <div>
+                        <div
+                            class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-purple-500 text-xl shadow-sm mb-5">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-navy mb-3">Cek Produsen</h4>
+                        <p class="text-gray-text text-sm leading-relaxed">Lihat profil perusahaan dan daftar seluruh produk
+                            yang mereka miliki.</p>
+                    </div>
                 </div>
-                <div class="stat-card" style="margin-top: 20px;">
-                    <h4>500+</h4>
-                    <p>Produsen</p>
+
+                <div
+                    class="bg-pastel-orange p-8 rounded-3xl transition-transform duration-300 hover:-translate-y-2 flex flex-col justify-between min-h-[260px]">
+                    <div>
+                        <div
+                            class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-orange-500 text-xl shadow-sm mb-5">
+                            <i class="fa-solid fa-book-quran"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-navy mb-3">Direktori Halal</h4>
+                        <p class="text-gray-text text-sm leading-relaxed">Katalog lengkap bahan baku dan produk jadi sesuai
+                            kategori.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="about-section">
-        <div class="about-container">
-            <div class="about-images">
-                <img src="https://images.unsplash.com/photo-1579027989536-b7b1f875659b?q=80&w=2070" alt="Halal Food">
-                <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=2030" alt="Cosmetic">
-            </div>
-            <div class="about-text">
-                <h4 style="color: var(--accent-yellow); font-weight: 800;">MISI KAMI</h4>
-                <h2 style="font-size: 2.8rem; margin: 1rem 0; line-height: 1.1;">Membangun Ekosistem Halal Digital Indonesia
-                </h2>
-                <p style="opacity: 0.8; font-size: 1.1rem; margin-bottom: 2rem;">Kami hadir untuk menghilangkan keraguan
-                    konsumen melalui teknologi. Dengan mempermudah akses informasi sertifikasi, kita bersama-sama memperkuat
-                    industri halal.</p>
-                <div style="display: flex; gap: 1rem;">
-                    <a href="{{ route('kontak.index') }}" class="btn-search"
-                        style="background: var(--accent-yellow); color: var(--dark-green); text-decoration: none; display: flex; align-items: center; justify-content: center;">Hubungi
-                        Kami</a>
-                    <a href="{{ route('tentang.index') }}"
-                        style="padding: 1rem 2rem; font-weight: 700; color: white; text-decoration: none;">Tentang Kami <i
-                            class="fa-solid fa-arrow-right"></i></a>
+    <section id="produk-populer" class="py-24 bg-bg-light">
+        <div class="container">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div class="max-w-2xl">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-navy mb-4">Produk Terbaru <span
+                            class="text-primary">Terverifikasi</span></h2>
+                    <p class="text-gray-text">Daftar produk makanan dan minuman populer yang baru saja memperbarui atau
+                        mendapatkan sertifikat halal.</p>
                 </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @php
+                    $products = [
+                        [
+                            'title' => 'Noodle Supreme Ayam',
+                            'cat' => 'Makanan Instan',
+                            'img' =>
+                                'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop',
+                        ],
+                        [
+                            'title' => 'Kopi Susu Gula Aren',
+                            'cat' => 'Minuman Olahan',
+                            'img' =>
+                                'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=800&auto=format&fit=crop',
+                        ],
+                        [
+                            'title' => 'Keripik Kentang Balado',
+                            'cat' => 'Makanan Ringan',
+                            'img' =>
+                                'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop',
+                        ],
+                    ];
+                @endphp
+
+                @foreach ($products as $prod)
+                    <div
+                        class="bg-white p-4 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1 hover:border-primary border border-transparent transition-all duration-300">
+                        <div class="h-52 w-full rounded-2xl overflow-hidden mb-4 bg-gray-100">
+                            <img src="{{ $prod['img'] }}" class="w-full h-full object-cover" alt="{{ $prod['title'] }}">
+                        </div>
+                        <div class="px-1">
+                            <h5 class="text-lg font-bold text-navy mb-1">{{ $prod['title'] }}</h5>
+                            <span class="text-sm text-gray-text block mb-4">{{ $prod['cat'] }}</span>
+                            <div class="flex justify-between items-center pt-4 border-t border-dashed border-gray-200">
+                                <span
+                                    class="bg-green-50 text-green-700 px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-check"></i> Halal
+                                </span>
+                                <small class="text-gray-400">ID321...</small>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
 
-    <section class="features-section">
-        <div style="text-align: center; margin-bottom: 5rem;">
-            <span style="color: var(--primary-green); font-weight: 800; text-transform: uppercase;">Kemudahan Layanan</span>
-            <h2 style="font-size: 2.8rem; color: var(--dark-green); margin-top: 0.5rem;">Fitur Unggulan Kami</h2>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <h4>Pencarian Cerdas</h4>
-                <p>Algoritma pencarian cepat berdasarkan Nama, Brand, atau Nomor Sertifikat.</p>
-                <a href="{{ route('produk.index') }}" class="btn-service">Coba Sekarang</a>
-            </div>
-            <div class="feature-card">
-                <i class="fa-solid fa-qrcode"></i>
-                <h4>Scan Barcode</h4>
-                <p>Cukup arahkan kamera ke barcode produk untuk melihat status halalnya.</p>
-                <a href="{{ route('produk.index') }}" class="btn-service">Buka Kamera</a>
-            </div>
-            <div class="feature-card">
-                <i class="fa-solid fa-building-circle-check"></i>
-                <h4>Profil Produsen</h4>
-                <p>Informasi lengkap mengenai daftar produk dari perusahaan tertentu.</p>
-                <a href="{{ route('produk.index') }}" class="btn-service">Lihat Data</a>
-            </div>
-            <div class="feature-card">
-                <i class="fa-solid fa-file-shield"></i>
-                <h4>Cek Keaslian</h4>
-                <p>Validasi masa berlaku sertifikat agar Anda terhindar dari pemalsuan.</p>
-                <a href="{{ route('produk.index') }}" class="btn-service">Validasi</a>
+    <section class="py-24 px-5 text-center">
+        <div class="container">
+            <h6 class="text-primary font-bold tracking-widest uppercase mb-3">Testimoni</h6>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-navy mb-12">Apa Kata Masyarakat?</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+
+                <div
+                    class="bg-white p-10 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 text-left relative">
+                    <i class="fa-solid fa-quote-right absolute top-6 right-8 text-5xl text-slate-100"></i>
+                    <p class="text-gray-text relative z-10 mb-6">"Sangat membantu saat belanja bulanan. Tinggal scan
+                        barcode, langsung ketahuan status halalnya. Tidak ragu lagi beli produk baru."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://randomuser.me/api/portraits/women/12.jpg"
+                            class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h5 class="font-bold text-navy">Sarah Aulia</h5>
+                            <small class="text-gray-text">Ibu Rumah Tangga</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-primary p-10 rounded-3xl shadow-xl text-left relative transform md:scale-105 z-10">
+                    <i class="fa-solid fa-quote-right absolute top-6 right-8 text-5xl text-white/20"></i>
+                    <p class="text-white/90 relative z-10 mb-6">"Sebagai pengusaha kuliner, saya sangat terbantu untuk
+                        mengecek bahan baku yang saya gunakan. Datanya sangat lengkap dan update."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg"
+                            class="w-12 h-12 rounded-full object-cover border-2 border-white/30">
+                        <div>
+                            <h5 class="font-bold text-white">Budi Santoso</h5>
+                            <small class="text-white/70">Pemilik Restoran</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white p-10 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 text-left relative">
+                    <i class="fa-solid fa-quote-right absolute top-6 right-8 text-5xl text-slate-100"></i>
+                    <p class="text-gray-text relative z-10 mb-6">"Aplikasi web ini sangat responsif dan mudah digunakan.
+                        Fitur pencarian produsennya detail sekali."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://randomuser.me/api/portraits/women/66.jpg"
+                            class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h5 class="font-bold text-navy">Dina Rahma</h5>
+                            <small class="text-gray-text">Mahasiswi</small>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
+
+    <section class="py-20 bg-white">
+        <div class="container flex flex-col lg:flex-row gap-12 items-start">
+            <div class="flex-1">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-navy mb-6">Pertanyaan yang Sering <span
+                        class="text-primary">Diajukan</span></h2>
+                <p class="text-gray-text mb-6 leading-relaxed">Meningkatkan pemahaman harian dan pengambilan keputusan yang
+                    lebih baik. Temukan jawaban singkat di sini.</p>
+                <a href="#" class="text-primary font-bold hover:underline flex items-center gap-2">
+                    Lihat Semua FAQ <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="flex-[1.5] w-full">
+                @foreach (['Bagaimana cara cek sertifikat halal?', 'Apakah data disini sinkron dengan BPJPH?', 'Bagaimana cara mendaftarkan produk saya?', 'Apakah ada biaya untuk menggunakan layanan ini?'] as $q)
+                    <div class="border-b border-gray-100 py-5 cursor-pointer group">
+                        <div
+                            class="flex justify-between items-center font-bold text-lg text-navy group-hover:text-primary transition-colors">
+                            {{ $q }} <i class="fa-solid fa-plus text-sm"></i>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <div class="container mb-20 mt-10">
+        <div
+            class="relative bg-gradient-to-br from-primary to-blue-400 rounded-[30px] p-10 md:p-16 flex flex-col md:flex-row justify-between items-center text-center md:text-left overflow-hidden shadow-2xl shadow-blue-500/30">
+            <div class="absolute -bottom-12 -right-12 w-72 h-72 bg-white/10 rounded-full"></div>
+
+            <div class="relative z-10 text-white mb-8 md:mb-0 max-w-lg">
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Mulai Cek Kehalalan Produk Sekarang</h2>
+                <p class="opacity-90">Pastikan apa yang Anda dan keluarga konsumsi terjamin kehalalannya. Gratis dan mudah.
+                </p>
+            </div>
+            <div class="relative z-10">
+                <a href="{{ route('produk.index') }}"
+                    class="bg-white text-primary px-8 py-4 rounded-full font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    Cari Produk
+                </a>
+            </div>
+        </div>
+    </div>
+
 @endsection

@@ -12,7 +12,6 @@ class FaqController extends Controller
     {
         $query = Faq::query();
 
-        // Filter pencarian
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -23,8 +22,6 @@ class FaqController extends Controller
 
         $faqs = $query->latest()->get();
 
-        // Grouping FAQ berdasarkan kategori (opsional, bisa ditambahkan field kategori di tabel)
-        // Untuk sementara kita buat manual grouping
         $faqGroups = [
             'Tentang Platform' => $faqs->take(3),
             'Cara Penggunaan' => $faqs->skip(3)->take(3),

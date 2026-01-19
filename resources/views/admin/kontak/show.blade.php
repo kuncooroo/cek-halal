@@ -65,7 +65,7 @@
 
             <div class="p-8">
                 <div class="mb-10">
-                    <label class="block text-sm font-bold text-gray-700 mb-3 dark:text-gray-300 uppercase tracking-wider text-xs">
+                    <label class="block font-bold text-gray-700 mb-3 dark:text-gray-300 uppercase tracking-wider text-xs">
                         Isi Pesan
                     </label>
                     <div class="w-full text-gray-800 dark:text-gray-200 whitespace-pre-line leading-relaxed text-base bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">

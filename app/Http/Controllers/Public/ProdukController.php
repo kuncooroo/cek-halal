@@ -8,58 +8,28 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class ProdukController extends Controller
-{
-    public function index(Request $request)
+{    
+     
+    public function index()
     {
-        // 1. Tangkap semua inputan dari form Home
-        $querySearch = $request->input('q');
-        $produsen = $request->input('produsen');
-        $nomorSertifikat = $request->input('no');
+        $stats = [
+            'total_produk' => Produk::where('status', 'aktif')->count(),
+            'total_produsen' => Produk::where('status', 'aktif')->distinct('nama_produsen')->count('nama_produsen'),
+        ];
 
-        $produk = null;
-
-        // 2. Jika ada salah satu input, jalankan pencarian otomatis saat halaman dimuat
-        if ($querySearch || $produsen || $nomorSertifikat) {
-            $query = Produk::where('status', 'aktif');
-
-            if ($querySearch) {
-                $query->where('nama_produk', 'like', '%' . $querySearch . '%');
-            }
-            if ($produsen) {
-                $query->where('nama_produsen', 'like', '%' . $produsen . '%');
-            }
-            if ($nomorSertifikat) {
-                $query->where('nomor_sertifikat_halal', $nomorSertifikat);
-            }
-
-            // Kita ambil hasil pertama untuk ditampilkan detailnya
-            $produk = $query->first();
-
-            if ($produk) {
-                // Tambahkan attribute status_halal secara dinamis
-                $tanggalKadaluarsa = Carbon::parse($produk->tanggal_kadaluarsa);
-                $produk->is_expired = $tanggalKadaluarsa->isPast();
-                $produk->label_status = $produk->is_expired ? 'Kadaluarsa' : 'Aktif';
-            }
-        }
-
-        // 3. Kirim data ke view agar bisa autofill di input form
-        return view('public.produk', [
-            'produk' => $produk,
-            'old_q' => $querySearch,
-            'old_produsen' => $produsen,
-            'old_no' => $nomorSertifikat
-        ]);
+        return view('public.produk', compact('stats'));
     }
 
-    // Fungsi search (AJAX) tetap dipertahankan jika kamu butuh pencarian tanpa reload di halaman produk
     public function search(Request $request)
     {
         $searchType = $request->input('search_type');
         $searchValue = $request->input('search_value');
 
         if (!$searchValue) {
-            return response()->json(['success' => false, 'message' => 'Silakan masukkan kata kunci']);
+            return response()->json([
+                'success' => false, 
+                'message' => 'Silakan masukkan kata kunci atau scan barcode.'
+            ]);
         }
 
         $query = Produk::where('status', 'aktif');
@@ -68,65 +38,56 @@ class ProdukController extends Controller
             case 'nama_produk':
                 $query->where('nama_produk', 'like', '%' . $searchValue . '%');
                 break;
+                
             case 'nama_produsen':
                 $query->where('nama_produsen', 'like', '%' . $searchValue . '%');
                 break;
+                
             case 'nomor_sertifikat':
-                $query->where('nomor_sertifikat_halal', $searchValue);
+                $query->where('nomor_sertifikat_halal', 'like', '%' . $searchValue . '%');
                 break;
+                
             case 'barcode':
                 $query->where('barcode', $searchValue);
                 break;
+                
+            default:
+                $query->where('nama_produk', 'like', '%' . $searchValue . '%');
+                break;
         }
 
-        $produk = $query->first();
+        $products = $query->limit(50)->orderBy('nama_produk', 'asc')->get();
 
-        if ($produk) {
-            $tanggalKadaluarsa = Carbon::parse($produk->tanggal_kadaluarsa);
-            $isExpired = $tanggalKadaluarsa->isPast();
+        if ($products->count() > 0) {
+            $data = $products->map(function ($item) {
+                $tglTerbit = $item->tanggal_terbit ? Carbon::parse($item->tanggal_terbit) : null;
+                $tglKadaluarsa = $item->tanggal_kadaluarsa ? Carbon::parse($item->tanggal_kadaluarsa) : null;
+                
+                $isExpired = $tglKadaluarsa ? $tglKadaluarsa->isPast() : false;
 
-            return response()->json([
-                'success' => true,
-                'found' => true,
-                'data' => [
-                    'nama_produk' => $produk->nama_produk,
-                    'nama_produsen' => $produk->nama_produsen,
-                    'nomor_sertifikat' => $produk->nomor_sertifikat_halal,
-                    'tanggal_terbit' => Carbon::parse($produk->tanggal_terbit)->format('d F Y'),
-                    'tanggal_kadaluarsa' => $tanggalKadaluarsa->format('d F Y'),
-                    'status_sertifikat' => $isExpired ? 'Kadaluarsa' : 'Aktif',
+                return [
+                    'nama_produk' => $item->nama_produk,
+                    'nama_produsen' => $item->nama_produsen,
+                    'nomor_sertifikat' => $item->nomor_sertifikat_halal,
+                    'barcode' => $item->barcode, 
+                    'tanggal_terbit' => $tglTerbit ? $tglTerbit->format('d F Y') : '-',
+                    'tanggal_kadaluarsa' => $tglKadaluarsa ? $tglKadaluarsa->format('d F Y') : '-',
                     'is_expired' => $isExpired,
-                    'kategori' => $produk->kategori ? $produk->kategori->nama_kategori : '-',
-                    'deskripsi' => $produk->deskripsi
-                ]
-            ]);
-        }
+                    'status_label' => $isExpired ? 'Kadaluarsa' : 'Halal'
+                ];
+            });
 
-        return response()->json(['success' => true, 'found' => false, 'message' => 'Produk tidak ditemukan']);
-    }
-
-    // Scan Barcode tetap sama
-    public function scanBarcode(Request $request)
-    {
-        $barcode = $request->input('barcode');
-        if (!$barcode)
-            return response()->json(['success' => false, 'message' => 'Barcode tidak valid']);
-
-        $produk = Produk::where('barcode', $barcode)->where('status', 'aktif')->first();
-
-        if ($produk) {
-            $tanggalKadaluarsa = Carbon::parse($produk->tanggal_kadaluarsa);
             return response()->json([
                 'success' => true,
                 'found' => true,
-                'data' => [
-                    'nama_produk' => $produk->nama_produk,
-                    'status_sertifikat' => $tanggalKadaluarsa->isPast() ? 'Kadaluarsa' : 'Aktif',
-                    // ... data lainnya
-                ]
+                'data' => $data 
             ]);
         }
 
-        return response()->json(['success' => true, 'found' => false, 'message' => 'Barcode tidak terdaftar']);
+        return response()->json([
+            'success' => true, 
+            'found' => false, 
+            'message' => 'Produk tidak ditemukan di database kami.'
+        ]);
     }
 }

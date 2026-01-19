@@ -60,6 +60,7 @@
                             <th class="px-6 py-4">Produsen</th>
                             <th class="px-6 py-4">Sertifikat Halal</th>
                             <th class="px-6 py-4">Kategori</th>
+                            <th class="px-6 py-4">Kadaluarsa</th> <!-- KOLOM BARU -->
                             <th class="px-6 py-4 text-center">Status</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
@@ -68,12 +69,13 @@
                         @forelse($produks as $index => $produk)
                             <tr class="hover:bg-gray-50 transition-colors duration-150 dark:hover:bg-slate-700/30">
                                 <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
-                                    {{ $loop->iteration }}
+                                    {{ $loop->iteration + $produks->firstItem() - 1 }}
+                                </td>
                                 <td class="px-6 py-4">
                                     <div class="font-semibold text-gray-900 dark:text-white">{{ $produk->nama_produk }}
                                     </div>
                                     <div class="text-xs text-gray-500 font-mono mt-0.5 dark:text-gray-400">BC:
-                                        {{ $produk->barcode }}</div>
+                                        {{ $produk->barcode ?? '-' }}</div>
                                 </td>
                                 <td class="px-6 py-4 text-gray-700 dark:text-gray-300">{{ $produk->nama_produsen }}</td>
                                 <td class="px-6 py-4 text-gray-700 font-mono text-xs dark:text-gray-300">
@@ -85,16 +87,33 @@
                                         {{ $produk->kategori->nama_kategori ?? 'Tanpa Kategori' }}
                                     </span>
                                 </td>
+                                
+                                <td class="px-6 py-4 text-gray-700 dark:text-gray-300">
+                                    {{ $produk->tanggal_kadaluarsa ? \Carbon\Carbon::parse($produk->tanggal_kadaluarsa)->format('d M Y') : '-' }}
+                                </td>
 
                                 <td class="px-6 py-4 text-center">
-                                    <span
-                                        class="px-3 py-1 text-xs font-medium rounded-full border 
-                                        {{ $produk->status === 'aktif'
-                                            ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
-                                            : 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800' }}">
-                                        {{ ucfirst($produk->status) }}
+                                    @php
+                                        $now = now();
+                                        $expiredDate = $produk->tanggal_kadaluarsa ? \Carbon\Carbon::parse($produk->tanggal_kadaluarsa) : null;
+                                        $isExpired = $expiredDate && $expiredDate->isPast(); // True jika tanggal < sekarang
+                                        
+                                        if ($isExpired) {
+                                            $statusLabel = 'Kadaluarsa';
+                                            $statusClasses = 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800';
+                                        } elseif ($produk->status === 'aktif') {
+                                            $statusLabel = 'Aktif';
+                                            $statusClasses = 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800';
+                                        } else {
+                                            $statusLabel = 'Tidak Aktif';
+                                            $statusClasses = 'bg-gray-100 text-gray-700 border-gray-200 dark:bg-slate-700 dark:text-gray-400 dark:border-slate-600';
+                                        }
+                                    @endphp
+                                    <span class="px-3 py-1 text-xs font-medium rounded-full border {{ $statusClasses }}">
+                                        {{ ucfirst($statusLabel) }}
                                     </span>
                                 </td>
+
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-3">
                                         <a href="{{ route('admin.produk.edit', $produk->id) }}"
@@ -126,7 +145,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-12 text-center">
+                                <td colspan="8" class="px-6 py-12 text-center">
                                     <div class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">

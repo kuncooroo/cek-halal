@@ -51,6 +51,18 @@
 
 @php
     $currentAdmin = Illuminate\Support\Facades\Auth::guard('admin')->user();
+
+    $now = now()->setTimezone('Asia/Jakarta');
+    $thresholdDate = $now->copy()->addDays(10);
+
+    $expiringProducts = \App\Models\Produk::where('tanggal_kadaluarsa', '>', $now)
+        ->where('tanggal_kadaluarsa', '<=', $thresholdDate)
+        ->orderBy('tanggal_kadaluarsa', 'asc')
+        ->get();
+
+    $dbNotifCount = isset($adminNotifications) ? $adminNotifications->count() : 0;
+    $systemNotifCount = $expiringProducts->count();
+    $totalNotifCount = $dbNotifCount + $systemNotifCount;
 @endphp
 
 <body class="bg-[#F7F9FB] text-gray-800 font-sans antialiased overflow-hidden dark:bg-slate-900 dark:text-gray-100">
@@ -129,7 +141,6 @@
                     <span class="text-sm font-medium">FAQ</span>
                 </a>
 
-                {{-- MENU BARU: PESAN KONTAK --}}
                 <a href="{{ route('admin.kontak.index') }}"
                     class="flex items-center space-x-3 px-3 py-2 rounded-lg group transition-colors {{ request()->routeIs('admin.kontak*') ? 'bg-gray-100 text-gray-900 dark:bg-slate-700 dark:text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-slate-700 dark:hover:text-white' }}">
                     <svg class="w-5 h-5 {{ request()->routeIs('admin.kontak*') ? 'text-gray-900 dark:text-white' : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-400 dark:group-hover:text-white' }}"
@@ -260,7 +271,7 @@
                             class="p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-slate-700 dark:hover:text-white transition-all relative focus:outline-none"
                             title="Notifikasi">
 
-                            @if (isset($adminNotifications) && $adminNotifications->count() > 0)
+                            @if ($totalNotifCount > 0)
                                 <div
                                     class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse">
                                 </div>
@@ -278,22 +289,51 @@
                             <div
                                 class="px-4 py-2 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center">
                                 <h3 class="text-sm font-bold text-gray-900 dark:text-white">Notifikasi</h3>
-                                @if (isset($adminNotifications) && $adminNotifications->count() > 0)
+                                @if ($totalNotifCount > 0)
                                     <span class="text-[10px] text-blue-600 dark:text-blue-400 font-medium">
-                                        {{ $adminNotifications->count() }} Baru
+                                        {{ $totalNotifCount }} Baru
                                     </span>
                                 @endif
                             </div>
 
                             <div class="max-h-64 overflow-y-auto custom-scrollbar">
+
+                                @foreach ($expiringProducts as $product)
+                                    <a href="{{ route('admin.produk.edit', $product->id) }}"
+                                        class="block px-4 py-3 transition-colors border-l-4 bg-yellow-50/50 hover:bg-yellow-50 border-yellow-500 dark:bg-yellow-900/10 dark:hover:bg-yellow-900/20">
+                                        <div class="flex items-start">
+                                            <div class="flex-1">
+                                                <p
+                                                    class="text-[10px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider mb-0.5">
+                                                    Segera Kadaluarsa
+                                                </p>
+                                                <p
+                                                    class="text-sm text-gray-700 dark:text-gray-200 line-clamp-2 font-medium">
+                                                    {{ $product->nama_produk }}
+                                                </p>
+                                                <p
+                                                    class="text-[10px] text-gray-400 mt-1 flex justify-between items-center">
+                                                    <span>{{ $product->tanggal_kadaluarsa->format('d M Y') }}</span>
+                                                    <span
+                                                        class="text-red-500 font-bold">{{ $product->tanggal_kadaluarsa->diffForHumans() }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+
                                 @forelse($adminNotifications ?? [] as $notif)
                                     @php
                                         $level = $notif->data['level'] ?? 'normal';
                                         $bgColor = match ($level) {
-                                            'important' => 'bg-red-50/50 hover:bg-red-50 border-red-500 dark:bg-red-900/10 dark:hover:bg-red-900/20',
-                                            'medium' => 'bg-yellow-50/50 hover:bg-yellow-50 border-yellow-500 dark:bg-yellow-900/10 dark:hover:bg-yellow-900/20',
-                                            'info' => 'bg-blue-50/50 hover:bg-blue-50 border-blue-500 dark:bg-blue-900/10 dark:hover:bg-blue-900/20',
-                                            default => 'hover:bg-gray-50 border-transparent dark:hover:bg-slate-700/50',
+                                            'important'
+                                                => 'bg-red-50/50 hover:bg-red-50 border-red-500 dark:bg-red-900/10 dark:hover:bg-red-900/20',
+                                            'medium'
+                                                => 'bg-yellow-50/50 hover:bg-yellow-50 border-yellow-500 dark:bg-yellow-900/10 dark:hover:bg-yellow-900/20',
+                                            'info'
+                                                => 'bg-blue-50/50 hover:bg-blue-50 border-blue-500 dark:bg-blue-900/10 dark:hover:bg-blue-900/20',
+                                            default
+                                                => 'hover:bg-gray-50 border-transparent dark:hover:bg-slate-700/50',
                                         };
                                         $textColor = match ($level) {
                                             'important' => 'text-red-600 dark:text-red-400',
@@ -331,10 +371,13 @@
                                         </div>
                                     </a>
                                 @empty
-                                    <div class="px-4 py-6 text-center">
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">Tidak ada notifikasi baru.
-                                        </p>
-                                    </div>
+                                    @if ($expiringProducts->count() == 0)
+                                        <div class="px-4 py-6 text-center">
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Tidak ada notifikasi
+                                                baru.
+                                            </p>
+                                        </div>
+                                    @endif
                                 @endforelse
                             </div>
 
